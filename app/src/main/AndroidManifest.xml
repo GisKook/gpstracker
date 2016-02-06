@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.zhangkai.gpstraker">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,6 +29,8 @@
 
         <service android:name=".ReportLocationDataService"
             android:exported="false"/>
+        <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
+        <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
 
     </application>
 
