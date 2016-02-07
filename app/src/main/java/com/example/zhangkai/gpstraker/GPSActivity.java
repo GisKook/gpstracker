@@ -18,7 +18,7 @@ import com.commonsware.cwac.locpoll.LocationPoller;
 
 public class GPSActivity extends AppCompatActivity {
 
-    private static final int PERIOD=2000;  // 30 minutes
+    private static final int PERIOD=2000*90;  // 30 minutes
     private PendingIntent pi=null;
     private AlarmManager mgr=null;
 
@@ -29,24 +29,20 @@ public class GPSActivity extends AppCompatActivity {
         scheduleAlarm();
     }
 
-//    @Override
-//    protected  void onDestroy(){
-//        super.onDestroy();
-//        startActivity(new Intent(this,GPSActivity.class));
-//    }
-
     // Setup a recurring alarm every half hour
     public void scheduleAlarm() {
-        AlarmManager mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
+        mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
 
         Intent i=new Intent(this, LocationPoller.class);
 
         i.putExtra(LocationPoller.EXTRA_INTENT,
                 new Intent(this, AlarmReceiver.class));
+//        i.putExtra(LocationPoller.EXTRA_PROVIDER,
+//                LocationManager.NETWORK_PROVIDER);
         i.putExtra(LocationPoller.EXTRA_PROVIDER,
-                LocationManager.NETWORK_PROVIDER);
+                LocationManager.GPS_PROVIDER);
 
-        PendingIntent pi=PendingIntent.getBroadcast(this, 0, i, 0);
+        pi=PendingIntent.getBroadcast(this, 0, i, 0);
         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime(),
                 PERIOD,
@@ -62,7 +58,7 @@ public class GPSActivity extends AppCompatActivity {
 //        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
 //        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
 //        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-//                AlarmManager.INTERVAL_HALF_HOUR/1800, pIntent);
+//                30*AlarmManager.INTERVAL_HALF_HOUR/1800, pIntent);
     }
 
     public void cancelAlarm() {
