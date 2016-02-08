@@ -26,8 +26,6 @@
             android:process=":remote">
         </receiver>
 
-        <service android:name=".ReportLocationDataService"
-            android:exported="false"/>
         <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
         <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
 
