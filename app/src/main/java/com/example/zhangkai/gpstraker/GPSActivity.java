@@ -29,7 +29,7 @@ public class GPSActivity extends AppCompatActivity {
 
     // Setup a recurring alarm every half hour
     public void scheduleAlarm() {
-        mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
+
 
         Intent i=new Intent(this, LocationPoller.class);
 
@@ -42,9 +42,12 @@ public class GPSActivity extends AppCompatActivity {
         i.putExtras(bundle);
 
         pi=PendingIntent.getBroadcast(this, 0, i, 0);
-        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime(),
-                PERIOD,
-                pi);
+//        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                SystemClock.elapsedRealtime(),
+//                PERIOD,
+//                pi);
+        long firstMillis = System.currentTimeMillis();
+        mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
+        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,AlarmManager.INTERVAL_HALF_HOUR/10,pi);
     }
 }
