@@ -38,7 +38,7 @@ public class GPSActivity extends AppCompatActivity {
         parameter.setIntentToBroadcastOnCompletion(new Intent(this, AlarmReceiver.class));
        // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
-        parameter.setTimeout(6000);
+        parameter.setTimeout(15000);
         i.putExtras(bundle);
 
         pi=PendingIntent.getBroadcast(this, 0, i, 0);
