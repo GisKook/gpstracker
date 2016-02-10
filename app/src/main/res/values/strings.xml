@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">gpstraker</string>
+    <string name='dateFormat'>dd/MM/yy \'at\' HH:mm:ss</string>
+    <string name="timestamp">&lt;br/&gt; &lt;small&gt; %1$s &lt;/small&gt;</string>
+    <string name="connectedto">Connected to </string>
+    <string name="disconnected">Disconnected from</string>
+    <string name="no_status">Unknown connection status to</string>
+    <string name="connecting">Connecting to</string>
+    <string name="disconnecting">Disconnecting from</string>
+    <string name="connectionError">An error occurred connecting to</string>
+    <string name="messageRecieved">Received message %1$s &lt;br/&gt; &lt;small&gt;Topic: %2$s &lt;/small&gt; </string>
+    <string name="connection_lost">%1$s has lost connection to %2$s</string>
 </resources>
