@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 public class GPSActivity extends AppCompatActivity {
 
     private static final int PERIOD=1000*10;  // 30 minutes
@@ -20,6 +22,12 @@ public class GPSActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
+        MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,this.getApplicationContext(),false);
+        try {
+            connection.Publish("abc");
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
         scheduleAlarm();
     }
 

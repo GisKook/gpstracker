@@ -24,12 +24,7 @@ import java.util.Date;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "222.222.218.50",30080,context,false);
-        try {
-            connection.Publish("abc");
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+
         File log = new File(Environment.getExternalStorageDirectory(),"LocationLog.txt");
 
         try {
