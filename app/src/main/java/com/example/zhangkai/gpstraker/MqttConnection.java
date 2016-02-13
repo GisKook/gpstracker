@@ -1,6 +1,7 @@
 package com.example.zhangkai.gpstraker;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -112,26 +113,48 @@ public class MqttConnection {
         this.sslConnection = sslConnection;
     }
 
+    public void connect() throws MqttException {
+        ActionListener acListener = new ActionListener(this.context,ActionListener.Action.CONNECT,this.clientHandle,null);
+        MqttConnectOptions connOpt = new MqttConnectOptions();
+        //connOpt.setConnectionTimeout(10);
+        connOpt.setKeepAliveInterval(1000);
+        this.client.setCallback(new MqttCallbackHandler(this.context,this.clientHandle));
+        this.client.setTraceCallback(new MqttTraceCallback());
+            try{
+                this.client.connect(connOpt,this.context, acListener);
+            }catch (MqttException e){
+                Log.e(this.getClass().getCanonicalName(),"----------------------------------------",e);
+        }
+
+        if(this.client.isConnected()) {
+            Log.i("connect", "------------------------------------");
+        }else{
+            Log.i("is not connect", "----------------------------------");
+        }
+    }
+
     public void Publish(String gpslocation) throws MqttException {
-        this.client.connect(this.context, new IMqttActionListener() {
-            @Override
-            public void onSuccess(IMqttToken iMqttToken) {
-                MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
-                message.setQos(0);
-                message.setRetained(false);
-                try {
-                    client.publish("messages", message);
-                    client.disconnect();
-                } catch (MqttException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-
-            }
-        });
+//        this.client.connect(this.context, new IMqttActionListener() {
+//            @Override
+//            public void onSuccess(IMqttToken iMqttToken) {
+//                MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
+//                message.setQos(0);
+//                message.setRetained(false);
+//                try {
+//                    client.publish("zhangkai", message);
+//                    client.disconnect();
+//                } catch (MqttException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
+//                Log.i("connect ", "failed----------------------------------------------------------");
+//                iMqttToken.getException().printStackTrace();
+//
+//            }
+//        });
 
     }
 }

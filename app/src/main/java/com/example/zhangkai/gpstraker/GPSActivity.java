@@ -24,11 +24,12 @@ public class GPSActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gps);
         MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,this.getApplicationContext(),false);
         try {
-            connection.Publish("abc");
+            connection.connect();
         } catch (MqttException e) {
             e.printStackTrace();
         }
-        scheduleAlarm();
+
+//        scheduleAlarm();
     }
 
     // Setup a recurring alarm every half hour
