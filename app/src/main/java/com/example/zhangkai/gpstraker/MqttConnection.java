@@ -9,6 +9,7 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -114,16 +115,18 @@ public class MqttConnection {
     }
 
     public void connect() throws MqttException {
-        ActionListener acListener = new ActionListener(this.context,ActionListener.Action.CONNECT,this.clientHandle,null);
+        String[] actionArgs = new String[0];
+        ActionListener acListener = new ActionListener(this.context,ActionListener.Action.CONNECT,clientHandle,actionArgs);
         MqttConnectOptions connOpt = new MqttConnectOptions();
         //connOpt.setConnectionTimeout(10);
         connOpt.setKeepAliveInterval(1000);
+        connOpt.setCleanSession(false);
         this.client.setCallback(new MqttCallbackHandler(this.context,this.clientHandle));
         this.client.setTraceCallback(new MqttTraceCallback());
-            try{
-                this.client.connect(connOpt,this.context, acListener);
-            }catch (MqttException e){
-                Log.e(this.getClass().getCanonicalName(),"----------------------------------------",e);
+        try{
+            this.client.connect(connOpt,this.context, acListener);
+        }catch (MqttException e){
+            Log.e(this.getClass().getCanonicalName(),"----------------------------------------",e);
         }
 
         if(this.client.isConnected()) {

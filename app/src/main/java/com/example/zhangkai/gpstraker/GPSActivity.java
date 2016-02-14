@@ -11,6 +11,7 @@ import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 
 public class GPSActivity extends AppCompatActivity {
 
@@ -22,13 +23,13 @@ public class GPSActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
+
         MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,this.getApplicationContext(),false);
         try {
             connection.connect();
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
 //        scheduleAlarm();
     }
 

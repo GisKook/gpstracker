@@ -82,6 +82,11 @@ class ActionListener implements IMqttActionListener {
    */
   @Override
   public void onSuccess(IMqttToken asyncActionToken) {
+    MqttMessage message = new MqttMessage("hello I am zhangkai".getBytes());
+    message.setQos(0);
+    message.setRetained(false);
+//    publish("zhangkai",message);
+//    publish("zhangkai", "hello i am zhangkai from China.".getBytes(),0,false);
     switch (action) {
       case CONNECT :
         connect();
