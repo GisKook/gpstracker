@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class GPSActivity extends AppCompatActivity {
 
-    private static final int PERIOD=1000*10;  // 30 minutes
+    private static final int PERIOD=1000*30;  // 30 minutes
     private PendingIntent pi=null;
     private AlarmManager mgr=null;
 
@@ -27,7 +27,7 @@ public class GPSActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
 
-        MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,null,false);
+        MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,this.getApplicationContext(),false);
         try {
             connection.connect();
             MqttConnections.getInstance().addConnection(connection);
@@ -40,10 +40,6 @@ public class GPSActivity extends AppCompatActivity {
     // Setup a recurring alarm every half hour
     public void scheduleAlarm(String mqtthandle) {
         Intent i=new Intent(this, LocationPoller.class);
-
-        HashMap<String, MqttConnection> cs = MqttConnections.getInstance().getConnections();
-        String testi = MqttConnections.getInstance().toString();
-        Log.i(testi,testi);
 
         Bundle bundle = new Bundle();
         LocationPollerParameter parameter = new LocationPollerParameter(bundle);
@@ -63,7 +59,7 @@ public class GPSActivity extends AppCompatActivity {
         long firstMillis = System.currentTimeMillis();
         mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
 //        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,AlarmManager.INTERVAL_HALF_HOUR/60,pi);
-        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,15000,pi);
+        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,PERIOD,pi);
     }
 
 }

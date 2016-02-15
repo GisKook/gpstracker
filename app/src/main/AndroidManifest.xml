@@ -23,9 +23,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver"
-            android:process=":remote">
-        </receiver>
+        <receiver android:name=".AlarmReceiver" />
 
         <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
         <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
