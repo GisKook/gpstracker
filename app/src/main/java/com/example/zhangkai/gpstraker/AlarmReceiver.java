@@ -24,12 +24,6 @@ import java.util.Date;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
-//        MqttConnection c = MqttConnections.getInstance().getConnection(mqttHandle);
-//        if(c.getConnnectionStatus() == MqttConnection.MqttConnectionStatus.CONNECTED){
-//            c.Publish("zhangkai","hello i am zhangkai");
-//        }
-
         File log = new File(Environment.getExternalStorageDirectory(),"LocationLog.txt");
 
         try {
@@ -39,6 +33,10 @@ public class AlarmReceiver extends BroadcastReceiver {
             out.write(" : ");
 
             Bundle b = intent.getExtras();
+            out.write("\n");
+            out.write(MqttConnections.getInstance().toString());
+            out.write("\n");
+            out.write(intent.getStringExtra("mqtt"));
 
 
             LocationPollerResult locationResult = new LocationPollerResult(b);

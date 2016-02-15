@@ -32,4 +32,8 @@ public class MqttConnections {
     public void removeConnection(MqttConnection connection){
         connections.remove(connection.handle());
     }
+
+    public HashMap<String, MqttConnection> getConnections(){
+        return connections;
+    }
 }
