@@ -128,6 +128,7 @@ class ActionListener implements IMqttActionListener {
    * then notify the user of success.
    */
   private void disconnect() {
+    MqttConnections.getInstance().getConnection(clientHandle).setConnectionStatus(MqttConnection.MqttConnectionStatus.DISCONNECTED);
   }
 
   /**
@@ -136,10 +137,7 @@ class ActionListener implements IMqttActionListener {
    * then notify the user of success.
    */
   private void connect() {
-    MqttMessage message = new MqttMessage("hello I am zhangkai".getBytes());
-    message.setQos(0);
-    message.setRetained(false);
-
+    MqttConnections.getInstance().getConnection(clientHandle).setConnectionStatus(MqttConnection.MqttConnectionStatus.CONNECTED);
   }
 
   /**

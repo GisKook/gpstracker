@@ -27,14 +27,15 @@ public class GPSActivity extends AppCompatActivity {
         MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,this.getApplicationContext(),false);
         try {
             connection.connect();
+            MqttConnections.getInstance().addConnection(connection);
         } catch (MqttException e) {
             e.printStackTrace();
         }
-//        scheduleAlarm();
+        scheduleAlarm(connection.handle());
     }
 
     // Setup a recurring alarm every half hour
-    public void scheduleAlarm() {
+    public void scheduleAlarm(String mqtthandle) {
         Intent i=new Intent(this, LocationPoller.class);
 
         Bundle bundle = new Bundle();
@@ -43,6 +44,8 @@ public class GPSActivity extends AppCompatActivity {
        // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
         parameter.setTimeout(10000);
+        bundle.putString("mqtt", mqtthandle.toString());
+
         i.putExtras(bundle);
 
         pi=PendingIntent.getBroadcast(this, 0, i, 0);

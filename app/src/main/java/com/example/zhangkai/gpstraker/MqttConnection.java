@@ -136,28 +136,26 @@ public class MqttConnection {
         }
     }
 
-    public void Publish(String gpslocation) throws MqttException {
-//        this.client.connect(this.context, new IMqttActionListener() {
-//            @Override
-//            public void onSuccess(IMqttToken iMqttToken) {
-//                MqttMessage message = new MqttMessage("Hello, I am Android Mqtt Client.".getBytes());
-//                message.setQos(0);
-//                message.setRetained(false);
-//                try {
-//                    client.publish("zhangkai", message);
-//                    client.disconnect();
-//                } catch (MqttException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(IMqttToken iMqttToken, Throwable throwable) {
-//                Log.i("connect ", "failed----------------------------------------------------------");
-//                iMqttToken.getException().printStackTrace();
-//
-//            }
-//        });
+    public String handle(){
+        return clientHandle;
+    }
 
+    public void setConnectionStatus(MqttConnectionStatus status){
+        this.status = status;
+    }
+
+    public MqttConnectionStatus getConnnectionStatus(){
+        return this.status;
+    }
+
+    public void Publish(String topic, String value) {
+        MqttMessage message = new MqttMessage(value.getBytes());
+        message.setQos(0);
+        message.setRetained(false);
+        try {
+            client.publish(topic, message);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 }
