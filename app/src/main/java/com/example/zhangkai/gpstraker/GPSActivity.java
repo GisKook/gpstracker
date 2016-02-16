@@ -12,5 +12,7 @@ public class GPSActivity extends AppCompatActivity {
 
         Intent mLocationUpInent = new Intent(this,LocationUpService.class);
         startService(mLocationUpInent);
+
+        //this.finish();
     }
 }

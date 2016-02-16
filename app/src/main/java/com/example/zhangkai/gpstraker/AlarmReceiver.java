@@ -10,7 +10,13 @@ import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
 import com.commonsware.cwac.locpoll.LocationPollerResult;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,48 +30,59 @@ import java.util.Date;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        File log = new File(Environment.getExternalStorageDirectory(),"LocationLog.txt");
-
+//        String clientHandle = intent.getStringExtra("mqtt");
+//        MqttConnections.getInstance().getConnection(clientHandle).Publish("zhangkai","hello");
+        String time = String.valueOf(new Date().getTime());
+        File log = new File(Environment.getExternalStorageDirectory(),"LocationLog"+time+".txt");
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
-
-            out.write(new Date().toString());
-            out.write(" : ");
-            Bundle b = intent.getExtras();
-
-            LocationPollerResult locationResult = new LocationPollerResult(b);
-
-            String clientHandle = intent.getStringExtra("mqtt");
-            MqttConnections.getInstance().getConnection(clientHandle).Publish("zhangkai","hello");
-
-            Location loc=locationResult.getLocation();
-            String msg;
-
-            if (loc==null) {
-                loc=locationResult.getLastKnownLocation();
-
-                if (loc==null) {
-                    msg=locationResult.getError();
-                }
-                else {
-                    msg="TIMEOUT, lastKnown="+loc.toString();
-                }
-            }
-            else {
-                msg=loc.toString();
-            }
-
-            if (msg==null) {
-                msg="Invalid broadcast received!";
-            }
-
-            out.write(msg);
-            out.write("\n");
+            out.write("---");
             out.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        File log = new File(Environment.getExternalStorageDirectory(),"LocationLog.txt");
+//
+//        try {
+//            BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
+//
+//            out.write(new Date().toString());
+//            out.write(" : ");
+//            Bundle b = intent.getExtras();
+//
+//            LocationPollerResult locationResult = new LocationPollerResult(b);
+//
+//            String clientHandle = intent.getStringExtra("mqtt");
+//            MqttConnections.getInstance().getConnection(clientHandle).Publish("zhangkai","hello");
+//
+//            Location loc=locationResult.getLocation();
+//            String msg;
+//
+//            if (loc==null) {
+//                loc=locationResult.getLastKnownLocation();
+//
+//                if (loc==null) {
+//                    msg=locationResult.getError();
+//                }
+//                else {
+//                    msg="TIMEOUT, lastKnown="+loc.toString();
+//                }
+//            }
+//            else {
+//                msg=loc.toString();
+//            }
+//
+//            if (msg==null) {
+//                msg="Invalid broadcast received!";
+//            }
+//
+//            out.write(msg);
+//            out.write("\n");
+//            out.close();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

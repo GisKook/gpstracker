@@ -66,7 +66,7 @@ public class LocationUpService extends Service {
         Bundle bundle = new Bundle();
         LocationPollerParameter parameter = new LocationPollerParameter(bundle);
         Intent extraIntent = new Intent(this, AlarmReceiver.class);
-        extraIntent.putExtra("mqtt", connection.handle().toString());
+        //extraIntent.putExtra("mqtt", connection.handle().toString());
         parameter.setIntentToBroadcastOnCompletion(extraIntent);
         // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
