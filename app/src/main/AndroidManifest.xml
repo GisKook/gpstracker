@@ -28,6 +28,9 @@
         <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
         <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <service
+            android:name=".LocationUpService"
+            android:exported="false"/>
 
     </application>
 
