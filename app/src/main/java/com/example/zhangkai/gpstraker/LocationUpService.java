@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -34,7 +35,6 @@ public class LocationUpService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         return START_STICKY;
     }
     @Nullable
@@ -74,14 +74,15 @@ public class LocationUpService extends Service {
         i.putExtras(bundle);
 
         pi= PendingIntent.getBroadcast(this, 0, i, 0);
-        //        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-        //                SystemClock.elapsedRealtime(),
-        //                PERIOD,
-        //                pi);
-        long firstMillis = System.currentTimeMillis();
         mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
-        //        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,AlarmManager.INTERVAL_HALF_HOUR/60,pi);
-        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,PERIOD,pi);
+        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime(),
+                PERIOD,
+                pi);
+//        long firstMillis = System.currentTimeMillis();
+//
+//        //        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,AlarmManager.INTERVAL_HALF_HOUR/60,pi);
+//        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,PERIOD,pi);
 
 
     }

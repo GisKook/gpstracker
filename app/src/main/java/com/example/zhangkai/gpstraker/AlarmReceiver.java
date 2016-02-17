@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
+
 import com.commonsware.cwac.locpoll.LocationPoller;
 import com.commonsware.cwac.locpoll.LocationPollerParameter;
 import com.commonsware.cwac.locpoll.LocationPollerResult;
@@ -32,6 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 //        String clientHandle = intent.getStringExtra("mqtt");
 //        MqttConnections.getInstance().getConnection(clientHandle).Publish("zhangkai","hello");
+
         String time = String.valueOf(new Date().getTime());
         File log = new File(Environment.getExternalStorageDirectory(),"LocationLog"+time+".txt");
         try {
@@ -41,6 +44,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
 //        File log = new File(Environment.getExternalStorageDirectory(),"LocationLog.txt");
 //
