@@ -23,11 +23,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver" />
-
-        <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
-        <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <receiver android:name=".LocationPoller" />
+        <service android:name=".LocationPollerService" />
         <service
             android:name=".LocationUpService"
             android:exported="false"/>

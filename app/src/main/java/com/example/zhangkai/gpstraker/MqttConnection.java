@@ -81,11 +81,11 @@ public class MqttConnection {
         String uri = null;
         if (sslConnection) {
             uri = "ssl://" + host + ":" + port;
-            handle = uri + clientId;
+            handle = clientId;
         }
         else {
             uri = "tcp://" + host + ":" + port;
-            handle = uri + clientId;
+            handle = clientId;
         }
         MqttAndroidClient client = new MqttAndroidClient(context, uri, clientId);
         return new MqttConnection(handle, clientId, host, port, context, client, sslConnection);

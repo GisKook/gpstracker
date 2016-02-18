@@ -3,22 +3,8 @@ package com.example.zhangkai.gpstraker;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.os.Bundle;
 import android.os.Environment;
-import android.os.PowerManager;
 
-import com.commonsware.cwac.locpoll.LocationPoller;
-import com.commonsware.cwac.locpoll.LocationPollerParameter;
-import com.commonsware.cwac.locpoll.LocationPollerResult;
-
-import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.BufferedWriter;
 import java.io.File;
