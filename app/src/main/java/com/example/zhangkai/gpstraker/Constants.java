@@ -5,5 +5,14 @@ package com.example.zhangkai.gpstraker;
  */
 public class Constants {
     public static final String LOCATIONACTION="zhangkai.LOCATION";
-    public static final String MQTTTOPIC="zhangkai";
+    public static final String MQTTTOPIC="location";
+    public static final String MQTTBROKERHOST="222.222.218.50";
+    public static final int MQTTBROKERPORT=31883;
+
+//    public static final String MQTTTOPIC="zhangkai";
+//    public static final String MQTTBROKERHOST="test.mosquitto.org";
+//    public static final int MQTTBROKERPORT=1883;
+
+    public static final int LOCATIONPERIOD=30*1000;
+    public static final int LOCATIONGPSTIMEOUT=10*1000;
 }

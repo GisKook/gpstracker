@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +32,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -38,8 +40,6 @@ import java.util.Locale;
  * Created by zhangkai on 2016/2/16.
  */
 public class LocationUpService extends Service {
-    private static final int PERIOD=1000*30;  // 30 seconds
-    private static final int GPSTIMEOUT=1000*10;  // 10 seconds
     private PendingIntent pi=null;
     private AlarmManager mgr=null;
 
@@ -47,23 +47,30 @@ public class LocationUpService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
-            Long time = loc.getTime();
-            Locale currentlocale = getResources().getConfiguration().locale;
 
-            String msg;
-
-            if (loc==null) {
-                msg=intent.getStringExtra(LocationPoller.EXTRA_ERROR);
+            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss",Locale.CHINA);
+            String strDate = (String) dateformat.format(loc.getTime());
+            JSONObject jsondata = new JSONObject();
+            try {
+                jsondata.put("date", strDate);
+                jsondata.put("card_no", "123456");
+                if(loc.getProvider().equals( "network")){
+                    jsondata.put("type","LBS");
+                }else{
+                    jsondata.put("type","gps");
+                }
+                JSONObject jsoncontent = new JSONObject();
+                jsoncontent.put("type","Point");
+                JSONArray coordinates = new JSONArray();
+                coordinates.put(loc.getLongitude());
+                coordinates.put(loc.getLatitude());
+                jsoncontent.put("coordinates",coordinates);
+                jsondata.put("content", jsoncontent);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            else {
-                msg=loc.toString();
-            }
 
-            if (msg==null) {
-                msg="Invalid broadcast received!";
-            }
-
-            Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,jsondata.toString(),Toast.LENGTH_SHORT).show();
 //            String time = String.valueOf(new Date().getTime());
 //            File log = new File(Environment.getExternalStorageDirectory(),"LocationLog"+time+".txt");
 //            try {
@@ -74,9 +81,9 @@ public class LocationUpService extends Service {
 //                e.printStackTrace();
 //            }
 
-            MqttConnection c = MqttConnections.getInstance().getConnection("zhangkai");
+            MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
             if(c != null){
-                c.Publish("zhangkai", "hello world");
+                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
             }
         }
     };
@@ -93,6 +100,7 @@ public class LocationUpService extends Service {
         final IntentFilter theFilter = new IntentFilter();
         theFilter.addAction(Constants.LOCATIONACTION);
         registerReceiver(locatinReceiver, theFilter, null, handler);
+//        registerReceiver(locatinReceiver, theFilter);
 
         startLocationUpService();
     }
@@ -108,7 +116,7 @@ public class LocationUpService extends Service {
     }
 
     private void startLocationUpService(){
-        MqttConnection connection = MqttConnection.createMqttConnection("zhangkai", "test.mosquitto.org",1883,this.getApplicationContext(),false);
+        MqttConnection connection = MqttConnection.createMqttConnection(Constants.MQTTTOPIC, Constants.MQTTBROKERHOST,Constants.MQTTBROKERPORT,this.getApplicationContext(),false);
         try {
             connection.connect();
             MqttConnections.getInstance().addConnection(connection);
@@ -126,14 +134,14 @@ public class LocationUpService extends Service {
         parameter.setIntentToBroadcastOnCompletion(extraIntent);
         // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
-        parameter.setTimeout(GPSTIMEOUT);
+        parameter.setTimeout(Constants.LOCATIONGPSTIMEOUT);
         i.putExtras(bundle);
 
         pi= PendingIntent.getBroadcast(this, 0, i, 0);
         mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime(),
-                PERIOD,
+                Constants.LOCATIONPERIOD,
                 pi);
 //        long firstMillis = System.currentTimeMillis();
 //
