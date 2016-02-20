@@ -43,63 +43,55 @@ public class LocationUpService extends Service {
     private PendingIntent pi=null;
     private AlarmManager mgr=null;
 
-    private final BroadcastReceiver locatinReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
-
-            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss",Locale.CHINA);
-            String strDate = (String) dateformat.format(loc.getTime());
-            JSONObject jsondata = new JSONObject();
-            try {
-                jsondata.put("date", strDate);
-                jsondata.put("card_no", "123456");
-                if(loc.getProvider().equals( "network")){
-                    jsondata.put("type","LBS");
-                }else{
-                    jsondata.put("type","gps");
-                }
-                JSONObject jsoncontent = new JSONObject();
-                jsoncontent.put("type","Point");
-                JSONArray coordinates = new JSONArray();
-                coordinates.put(loc.getLongitude());
-                coordinates.put(loc.getLatitude());
-                jsoncontent.put("coordinates",coordinates);
-                jsondata.put("content", jsoncontent);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            Toast.makeText(context,jsondata.toString(),Toast.LENGTH_SHORT).show();
-//            String time = String.valueOf(new Date().getTime());
-//            File log = new File(Environment.getExternalStorageDirectory(),"LocationLog"+time+".txt");
+//    private final BroadcastReceiver locatinReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
+//
+//            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss",Locale.CHINA);
+//            String strDate = (String) dateformat.format(loc.getTime());
+//            JSONObject jsondata = new JSONObject();
 //            try {
-//                BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
-//                out.write("---");
-//                out.close();
-//            } catch (IOException e) {
+//                jsondata.put("date", strDate);
+//                jsondata.put("card_no", "123456");
+//                if(loc.getProvider().equals( "network")){
+//                    jsondata.put("type","LBS");
+//                }else{
+//                    jsondata.put("type","gps");
+//                }
+//                JSONObject jsoncontent = new JSONObject();
+//                jsoncontent.put("type","Point");
+//                JSONArray coordinates = new JSONArray();
+//                coordinates.put(loc.getLongitude());
+//                coordinates.put(loc.getLatitude());
+//                jsoncontent.put("coordinates",coordinates);
+//                jsondata.put("content", jsoncontent);
+//            } catch (JSONException e) {
 //                e.printStackTrace();
 //            }
-
-            MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
-            if(c != null){
-                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
-            }
-        }
-    };
+//
+////            Toast.makeText(context,jsondata.toString(),Toast.LENGTH_SHORT).show();
+//            util.recordLog("locationRecevier.txt");
+//
+//            MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
+//            if(c != null){
+//                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
+//            }
+//        }
+//    };
 
     @Override
     public void onCreate() {
         Log.i("giskook", "LocationUp onCreate");
         super.onCreate();
-        HandlerThread handlerThread = new HandlerThread("ht");
-        handlerThread.start();
-        Looper looper = handlerThread.getLooper();
-        Handler handler = new Handler(looper);
-
-        final IntentFilter theFilter = new IntentFilter();
-        theFilter.addAction(Constants.LOCATIONACTION);
-        registerReceiver(locatinReceiver, theFilter, null, handler);
+//        HandlerThread handlerThread = new HandlerThread("ht");
+//        handlerThread.start();
+//        Looper looper = handlerThread.getLooper();
+//        Handler handler = new Handler(looper);
+//
+//        final IntentFilter theFilter = new IntentFilter();
+//        theFilter.addAction(Constants.LOCATIONACTION);
+//        registerReceiver(locatinReceiver, theFilter, null, handler);
 //        registerReceiver(locatinReceiver, theFilter);
 
         startLocationUpService();

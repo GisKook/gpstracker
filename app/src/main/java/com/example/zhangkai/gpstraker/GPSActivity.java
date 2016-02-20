@@ -72,6 +72,7 @@ public class GPSActivity extends AppCompatActivity {
 
         Intent i = new Intent(this, LocationUpService.class);
         startService(i);
+
     }
 
     @Override

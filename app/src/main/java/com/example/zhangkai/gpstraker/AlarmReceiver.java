@@ -3,14 +3,21 @@ package com.example.zhangkai.gpstraker;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Environment;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by zhangkai on 2016/2/4.
@@ -18,61 +25,36 @@ import java.util.Date;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-//        String clientHandle = intent.getStringExtra("mqtt");
-//        MqttConnections.getInstance().getConnection(clientHandle).Publish("zhangkai","hello");
+        Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
 
-        String time = String.valueOf(new Date().getTime());
-        File log = new File(Environment.getExternalStorageDirectory(),"LocationLog"+time+".txt");
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss", Locale.CHINA);
+        String strDate = (String) dateformat.format(loc.getTime());
+        JSONObject jsondata = new JSONObject();
         try {
-            BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
-            out.write("---");
-            out.close();
-        } catch (IOException e) {
+            jsondata.put("date", strDate);
+            jsondata.put("card_no", "123456");
+            if(loc.getProvider().equals( "network")){
+                jsondata.put("type","LBS");
+            }else{
+                jsondata.put("type","gps");
+            }
+            JSONObject jsoncontent = new JSONObject();
+            jsoncontent.put("type","Point");
+            JSONArray coordinates = new JSONArray();
+            coordinates.put(loc.getLongitude());
+            coordinates.put(loc.getLatitude());
+            jsoncontent.put("coordinates",coordinates);
+            jsondata.put("content", jsoncontent);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
+//            Toast.makeText(context,jsondata.toString(),Toast.LENGTH_SHORT).show();
+        util.recordLog("locationRecevier.txt");
 
-//        File log = new File(Environment.getExternalStorageDirectory(),"LocationLog.txt");
-//
-//        try {
-//            BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
-//
-//            out.write(new Date().toString());
-//            out.write(" : ");
-//            Bundle b = intent.getExtras();
-//
-//            LocationPollerResult locationResult = new LocationPollerResult(b);
-//
-//            String clientHandle = intent.getStringExtra("mqtt");
-//            MqttConnections.getInstance().getConnection(clientHandle).Publish("zhangkai","hello");
-//
-//            Location loc=locationResult.getLocation();
-//            String msg;
-//
-//            if (loc==null) {
-//                loc=locationResult.getLastKnownLocation();
-//
-//                if (loc==null) {
-//                    msg=locationResult.getError();
-//                }
-//                else {
-//                    msg="TIMEOUT, lastKnown="+loc.toString();
-//                }
-//            }
-//            else {
-//                msg=loc.toString();
-//            }
-//
-//            if (msg==null) {
-//                msg="Invalid broadcast received!";
-//            }
-//
-//            out.write(msg);
-//            out.write("\n");
-//            out.close();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
+        if(c != null){
+            c.Publish(Constants.MQTTTOPIC, jsondata.toString());
+        }
     }
 }

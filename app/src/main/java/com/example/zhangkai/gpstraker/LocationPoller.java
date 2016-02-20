@@ -18,7 +18,16 @@ package com.example.zhangkai.gpstraker;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.util.Log;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * BroadcastReceiver to be launched by AlarmManager. Simply
@@ -59,7 +68,10 @@ public class LocationPoller extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.i("giskook", "onReceive");
+
+
 		LocationPollerService.requestLocation(context, intent);
+		util.recordLog("onReceive.txt");
 	}
 	
 }

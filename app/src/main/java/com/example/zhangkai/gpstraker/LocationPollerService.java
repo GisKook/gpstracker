@@ -69,7 +69,6 @@ public class LocationPollerService extends Service {
 	 */
 	public static void requestLocation(Context context, Intent intent)
 			throws InvalidParameterException {
-		Log.i("giskook","requtestLocation");
 
 		assertValidParameters(intent);
 		getLock(context.getApplicationContext()).acquire();
@@ -103,7 +102,6 @@ public class LocationPollerService extends Service {
 	 */
 	@Override
 	public void onCreate() {
-		Log.i("giskook","LocationPollerService onCreate");
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		//android.os.Debug.waitForDebugger();
 	}
@@ -114,6 +112,13 @@ public class LocationPollerService extends Service {
 	@Override
 	public IBinder onBind(Intent i) {
 		return (null);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		// The service is no longer used and is being destroyed
+		Log.i("giskook","servie gone");
 	}
 
 	/**
@@ -129,10 +134,9 @@ public class LocationPollerService extends Service {
 	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i("giskook","LocationPollerService onStartCommmand");
-
 		PowerManager.WakeLock lock = getLock(this.getApplicationContext());
 		if (!lock.isHeld() || (flags & START_FLAG_REDELIVERY) != 0) {
+			util.recordLog("onStartCommandbeforeacquire.txt");
 			lock.acquire();
 		}
 
@@ -141,7 +145,6 @@ public class LocationPollerService extends Service {
 		PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
 		pollerThread.start();
 
-		Log.i("giskook","LocationPollerService onStartCommmand2");
 		try {
 			pollerThread.join(parameters.getTimeout());
 		} catch (InterruptedException e) {
@@ -165,7 +168,7 @@ public class LocationPollerService extends Service {
 		private Runnable onTimeout = new Runnable() {
 
 			public void run() {
-				Log.i("giskook", "PollerThread run");
+				util.recordLog("Wakefulthreadrun.txt");
 				locationManager.removeUpdates(listener);
 				if (isTriedAllProviders()) {
 					broadCastFailureMessage();
@@ -185,13 +188,14 @@ public class LocationPollerService extends Service {
 			 * exit the polling loop so the thread terminates.
 			 */
 			public void onLocationChanged(Location location) {
-				Log.i("giskook", "onLocationChanged");
 				handler.removeCallbacks(onTimeout);
 				Intent toBroadcast = createIntentToBroadcastOnCompletion();
 
 				toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
 				sendBroadcast(toBroadcast);
+				util.recordLog("onLocationChanged.txt");
 				quit();
+				stopSelf();
 			}
 
 			public void onProviderDisabled(String provider) {
@@ -250,8 +254,6 @@ public class LocationPollerService extends Service {
 
 		private void requestLocationUdpate() {
 			try {
-
-				Log.i("giskook", "requestLocationUpdate");
 				locationManager.requestLocationUpdates(getCurrentProvider(), 0,
 						0, listener);
 			} catch (IllegalArgumentException e) {
@@ -259,6 +261,7 @@ public class LocationPollerService extends Service {
 				Log.w(getClass().getSimpleName(),
 						"Exception requesting updates -- may be emulator issue",
 						e);
+				util.recordLog("requestLocationUpdate.txt");
 				quit();
 			}
 		}
