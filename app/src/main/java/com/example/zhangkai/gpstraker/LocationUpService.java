@@ -131,15 +131,12 @@ public class LocationUpService extends Service {
 
         pi= PendingIntent.getBroadcast(this, 0, i, 0);
         mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
-        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime(),
-                Constants.LOCATIONPERIOD,
-                pi);
-//        long firstMillis = System.currentTimeMillis();
-//
-//        //        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,AlarmManager.INTERVAL_HALF_HOUR/60,pi);
-//        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,PERIOD,pi);
+   //     mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+   //             SystemClock.elapsedRealtime(),
+   //             Constants.LOCATIONPERIOD,
+   //             pi);
+        long firstMillis = System.currentTimeMillis();
 
-
+        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,Constants.LOCATIONPERIOD,pi);
     }
 }

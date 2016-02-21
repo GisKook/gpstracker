@@ -47,6 +47,7 @@ public class WakefulThread extends HandlerThread {
    */
   protected void onPreExecute() {
     // no-op by default
+      Log.i("giskook","test");
   }
 
   /**
@@ -72,6 +73,7 @@ public class WakefulThread extends HandlerThread {
    */
   protected void onUnlocked() {
     // no-op by default
+      Log.i("giskook", "test");
   }
 
   @Override

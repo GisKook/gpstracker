@@ -145,13 +145,14 @@ public class LocationPollerService extends Service {
 		PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
 		pollerThread.start();
 
-		try {
-			pollerThread.join(parameters.getTimeout());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		//try {
+		//	pollerThread.join(parameters.getTimeout());
+		//} catch (InterruptedException e) {
+		//	e.printStackTrace();
+		//}
 
 		return (START_REDELIVER_INTENT);
+//		return START_STICKY;
 	}
 
 	/**
@@ -169,6 +170,7 @@ public class LocationPollerService extends Service {
 
 			public void run() {
 				util.recordLog("Wakefulthreadrun.txt");
+				Log.i("giskook run", String.valueOf(android.os.Process.getThreadPriority(android.os.Process.myTid())));
 				locationManager.removeUpdates(listener);
 				if (isTriedAllProviders()) {
 					broadCastFailureMessage();
@@ -195,7 +197,6 @@ public class LocationPollerService extends Service {
 				sendBroadcast(toBroadcast);
 				util.recordLog("onLocationChanged.txt");
 				quit();
-				stopSelf();
 			}
 
 			public void onProviderDisabled(String provider) {
@@ -248,7 +249,8 @@ public class LocationPollerService extends Service {
 		}
 
 		private void tryNextProvider() {
-			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
+			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout()+1000);
+			Log.i("giskook tryNextProvider", String.valueOf(android.os.Process.getThreadPriority(android.os.Process.myTid())));
 			requestLocationUdpate();
 		}
 
@@ -298,8 +300,7 @@ public class LocationPollerService extends Service {
 		@Override
 		protected void onPostExecute() {
 			locationManager.removeUpdates(listener);
-
-      super.onPostExecute();
+      		super.onPostExecute();
 		}
 
     /**

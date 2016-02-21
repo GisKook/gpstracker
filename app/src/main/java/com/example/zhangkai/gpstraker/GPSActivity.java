@@ -2,14 +2,9 @@ package com.example.zhangkai.gpstraker;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-
-import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class GPSActivity extends AppCompatActivity {
     private static final int PERIOD=1000*30;  // 30 seconds
