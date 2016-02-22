@@ -18,22 +18,18 @@
         <activity android:name=".GPSActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
-        <receiver android:name=".LocationPoller" />
-        <receiver android:name=".AlarmReceiver">
-            <intent-filter>
-                　　<action android:name="zhangkai.LOCATION"></action>
-            </intent-filter>
-        </receiver>
         <service android:name=".LocationPollerService" />
         <service
             android:name=".LocationUpService"
             android:exported="false"/>
+
+        <receiver android:name=".LocationPoller" />
+        <receiver android:name=".AlarmReceiver"></receiver>
 
     </application>
 

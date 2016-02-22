@@ -16,6 +16,9 @@
 package com.example.zhangkai.gpstraker;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +31,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 /**
@@ -136,20 +140,32 @@ public class LocationPollerService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		PowerManager.WakeLock lock = getLock(this.getApplicationContext());
 		if (!lock.isHeld() || (flags & START_FLAG_REDELIVERY) != 0) {
-			util.recordLog("onStartCommandbeforeacquire.txt");
 			lock.acquire();
 		}
 
 		LocationPollerParameter parameters = getParametersFromIntent(intent);
 
+		NotificationCompat.Builder mBuilder =
+				new NotificationCompat.Builder(this)
+						.setSmallIcon(R.drawable.loction)
+						.setContentTitle("My notification")
+						.setContentText(android.os.Process.myPid() + " " + android.os.Process.myTid());
+		;
+
+//		NotificationManager mNotifyMgr =
+//				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		//mNotifyMgr.notify(1,mBuilder.build());
+		startForeground(1234, mBuilder.build());
+
 		PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
 		pollerThread.start();
 
-		//try {
-		//	pollerThread.join(parameters.getTimeout());
-		//} catch (InterruptedException e) {
-		//	e.printStackTrace();
-		//}
+		try {
+			pollerThread.join(parameters.getTimeout());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 
 		return (START_REDELIVER_INTENT);
 //		return START_STICKY;

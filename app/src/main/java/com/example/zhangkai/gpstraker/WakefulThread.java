@@ -92,6 +92,12 @@ public class WakefulThread extends HandlerThread {
   public void run() {
     try {
       super.run();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                Log.i("giskook","handlerthread");
+            };
+        });
     }
     finally {
       onPostExecute();
