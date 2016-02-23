@@ -1,6 +1,8 @@
 package com.example.zhangkai.gpstraker;
 
 import android.content.Context;
+import android.provider.ContactsContract;
+import android.provider.SyncStateContract;
 import android.util.Log;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -46,6 +48,8 @@ public class MqttConnection {
 
     /** True if this connection is secured using SSL **/
     private boolean sslConnection = false;
+
+    private int conntimeout = Constants.MQTTCONNTIMEOUT;
 
     /**
      * Connections status for  a connection
@@ -114,25 +118,25 @@ public class MqttConnection {
         this.sslConnection = sslConnection;
     }
 
-    public void connect() throws MqttException {
+    public boolean isConnnected(){
+        return this.client.isConnected();
+    }
+    public void connect(int timeout){
         String[] actionArgs = new String[0];
         ActionListener acListener = new ActionListener(this.context,ActionListener.Action.CONNECT,clientHandle,actionArgs);
         MqttConnectOptions connOpt = new MqttConnectOptions();
-        //connOpt.setConnectionTimeout(10);
-        connOpt.setKeepAliveInterval(1000);
+        this.conntimeout += timeout;
+        if(this.conntimeout >= Constants.MQTTMAXCONNTIMEOUT){
+            connOpt.setConnectionTimeout(Constants.MQTTMAXCONNTIMEOUT);
+        }
+        connOpt.setKeepAliveInterval(Constants.MQTTKEEPALIVEINTERVAL);
         connOpt.setCleanSession(false);
         this.client.setCallback(new MqttCallbackHandler(this.context,this.clientHandle));
         this.client.setTraceCallback(new MqttTraceCallback());
         try{
             this.client.connect(connOpt,this.context, acListener);
         }catch (MqttException e){
-            Log.e(this.getClass().getCanonicalName(),"----------------------------------------",e);
-        }
-
-        if(this.client.isConnected()) {
-            Log.i("connect", "------------------------------------");
-        }else{
-            Log.i("is not connect", "----------------------------------");
+            e.printStackTrace();
         }
     }
 

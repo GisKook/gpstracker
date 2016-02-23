@@ -185,8 +185,6 @@ public class LocationPollerService extends Service {
 		private Runnable onTimeout = new Runnable() {
 
 			public void run() {
-				util.recordLog("Wakefulthreadrun.txt");
-				Log.i("giskook run", String.valueOf(android.os.Process.getThreadPriority(android.os.Process.myTid())));
 				locationManager.removeUpdates(listener);
 				if (isTriedAllProviders()) {
 					broadCastFailureMessage();
@@ -211,7 +209,6 @@ public class LocationPollerService extends Service {
 
 				toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
 				sendBroadcast(toBroadcast);
-				util.recordLog("onLocationChanged.txt");
 				quit();
 			}
 
@@ -279,7 +276,6 @@ public class LocationPollerService extends Service {
 				Log.w(getClass().getSimpleName(),
 						"Exception requesting updates -- may be emulator issue",
 						e);
-				util.recordLog("requestLocationUpdate.txt");
 				quit();
 			}
 		}

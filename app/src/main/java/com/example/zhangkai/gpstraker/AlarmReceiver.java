@@ -1,12 +1,15 @@
 package com.example.zhangkai.gpstraker;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Environment;
 
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +21,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static com.example.zhangkai.gpstraker.DataBase.*;
 
 /**
  * Created by zhangkai on 2016/2/4.
@@ -49,12 +54,23 @@ public class AlarmReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
-//            Toast.makeText(context,jsondata.toString(),Toast.LENGTH_SHORT).show();
-        util.recordLog("locationRecevier.txt");
+        util.recordLog("locationRecevier.txt",loc.getProvider().toString());
 
         MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
-        if(c != null){
-            c.Publish(Constants.MQTTTOPIC, jsondata.toString());
+        if(c != null ){
+            if(c.isConnnected()){
+                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
+            }else{
+                DataBase dbHelper = new DataBase(context);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                // Create a new map of values, where column names are the keys
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_NAME_LOCATION, jsondata.toString());
+
+                // Insert the new row, returning the primary key value of the new row
+                db.insert(TABLE_NAME,null,values);
+                c.connect(5);
+            }
         }
     }
 }

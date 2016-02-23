@@ -48,7 +48,6 @@ public class LocationUpService extends Service {
     private final BroadcastReceiver locatinReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            util.recordLog("abc.txt");
             if (intent.getAction().equals(Constants.LOCATIONACTION)){
                 Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
 
@@ -73,9 +72,6 @@ public class LocationUpService extends Service {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-//            Toast.makeText(context,jsondata.toString(),Toast.LENGTH_SHORT).show();
-                util.recordLog("locationRecevier.txt");
 
                 MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
                 if(c != null){
@@ -128,12 +124,8 @@ public class LocationUpService extends Service {
 
     private void startLocationUpService(){
         MqttConnection connection = MqttConnection.createMqttConnection(Constants.MQTTTOPIC, Constants.MQTTBROKERHOST,Constants.MQTTBROKERPORT,this.getApplicationContext(),false);
-        try {
-            connection.connect();
-            MqttConnections.getInstance().addConnection(connection);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+        connection.connect(0);
+        MqttConnections.getInstance().addConnection(connection);
 
         //Intent i=new Intent(this, LocationPoller.class);
 //        i.setAction(Constants.LOCATIONACTION);

@@ -22,7 +22,6 @@ public class GPSActivity extends AppCompatActivity {
 //        Intent i = new Intent(this, LocationUpService.class);
 //        startService(i);
         startLocationUpService();
-
     }
 
     @Override
@@ -47,12 +46,8 @@ public class GPSActivity extends AppCompatActivity {
 
     private void startLocationUpService(){
         MqttConnection connection = MqttConnection.createMqttConnection(Constants.MQTTTOPIC, Constants.MQTTBROKERHOST,Constants.MQTTBROKERPORT,this.getApplicationContext(),false);
-        try {
-            connection.connect();
-            MqttConnections.getInstance().addConnection(connection);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+        connection.connect(0);
+        MqttConnections.getInstance().addConnection(connection);
 
         Intent i=new Intent(this, LocationPoller.class);
 //        i.setAction(Constants.LOCATIONACTION);

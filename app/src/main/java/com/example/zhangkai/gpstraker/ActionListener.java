@@ -14,6 +14,7 @@ package com.example.zhangkai.gpstraker;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import android.content.Context;
@@ -82,11 +83,6 @@ class ActionListener implements IMqttActionListener {
    */
   @Override
   public void onSuccess(IMqttToken asyncActionToken) {
-    MqttMessage message = new MqttMessage("hello I am zhangkai".getBytes());
-    message.setQos(0);
-    message.setRetained(false);
-//    publish("zhangkai",message);
-//    publish("zhangkai", "hello i am zhangkai from China.".getBytes(),0,false);
     switch (action) {
       case CONNECT :
         connect();
@@ -152,6 +148,7 @@ class ActionListener implements IMqttActionListener {
   public void onFailure(IMqttToken token, Throwable exception) {
     switch (action) {
       case CONNECT :
+        MqttConnections.getInstance().getConnection(token.getClient().getClientId()).setConnectionStatus(MqttConnection.MqttConnectionStatus.ERROR);
         connect(exception);
         break;
       case DISCONNECT :
@@ -195,6 +192,7 @@ class ActionListener implements IMqttActionListener {
    * @param exception This argument is not used
    */
   private void connect(Throwable exception) {
+
   }
 
 }
