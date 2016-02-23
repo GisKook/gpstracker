@@ -69,7 +69,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
                 // Insert the new row, returning the primary key value of the new row
                 db.insert(TABLE_NAME,null,values);
-                c.connect(5);
             }
         }
     }

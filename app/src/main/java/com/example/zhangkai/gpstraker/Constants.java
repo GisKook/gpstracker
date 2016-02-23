@@ -18,6 +18,6 @@ public class Constants {
     public static final int MQTTMAXCONNTIMEOUT=120;
 
     public static final int LOCATIONPERIOD=30*1000;
-    public static final int LOCATIONGPSTIMEOUT=5*1000;
+    public static final int LOCATIONGPSTIMEOUT=8*1000;
 
 }

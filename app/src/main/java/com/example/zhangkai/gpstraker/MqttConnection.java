@@ -128,6 +128,8 @@ public class MqttConnection {
         this.conntimeout += timeout;
         if(this.conntimeout >= Constants.MQTTMAXCONNTIMEOUT){
             connOpt.setConnectionTimeout(Constants.MQTTMAXCONNTIMEOUT);
+        }else{
+            connOpt.setConnectionTimeout(this.conntimeout);
         }
         connOpt.setKeepAliveInterval(Constants.MQTTKEEPALIVEINTERVAL);
         connOpt.setCleanSession(false);
