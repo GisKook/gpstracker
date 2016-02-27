@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -22,6 +23,7 @@ public class GPSActivity extends AppCompatActivity {
 //        Intent i = new Intent(this, LocationUpService.class);
 //        startService(i);
         startLocationUpService();
+        startLocationAssitant();
     }
 
     @Override
@@ -66,13 +68,34 @@ public class GPSActivity extends AppCompatActivity {
 
         pi= PendingIntent.getBroadcast(this, 0, i, 0);
         mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
-        //     mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-        //             SystemClock.elapsedRealtime(),
-        //             Constants.LOCATIONPERIOD,
-        //             pi);
-        long firstMillis = System.currentTimeMillis();
+         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                 SystemClock.elapsedRealtime()+Constants.LOCATIONGPSTIMEOUT-1000,
+                 Constants.LOCATIONPERIOD,
+                 pi);
 
-        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,Constants.LOCATIONPERIOD,pi);
+//        long firstMillis = System.currentTimeMillis();
+
+//        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,Constants.LOCATIONPERIOD,pi);
+//        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis+Constants.LOCATIONGPSTIMEOUT,Constants.LOCATIONPERIOD,pi);
+    }
+
+    void startLocationAssitant(){
+        Intent i=new Intent(this, GPSAssitantBroadcastReceiver.class);
+
+        int _id = (int)System.currentTimeMillis();
+        pi= PendingIntent.getBroadcast(this, _id, i, 0);
+
+        mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
+        mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime(),
+                Constants.LOCATIONPERIOD,
+                pi);
+
+//        long firstMillis = System.currentTimeMillis();
+
+//        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis,Constants.LOCATIONPERIOD,pi);
+//        mgr.setInexactRepeating(AlarmManager.RTC_WAKEUP,firstMillis+Constants.LOCATIONGPSTIMEOUT,Constants.LOCATIONPERIOD,pi);
+
     }
 
 }

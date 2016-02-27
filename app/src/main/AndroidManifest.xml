@@ -29,6 +29,7 @@
             android:exported="false"/>
 
         <receiver android:name=".LocationPoller" />
+        <receiver android:name=".GPSAssitantBroadcastReceiver" />
         <receiver android:name=".AlarmReceiver"></receiver>
 
     </application>

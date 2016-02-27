@@ -16,11 +16,13 @@
 package com.example.zhangkai.gpstraker;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -30,6 +32,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -78,6 +81,24 @@ public class LocationPollerService extends Service {
 		getLock(context.getApplicationContext()).acquire();
 
 		intent.setClass(context, LocationPollerService.class);
+
+		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+		boolean gps_enabled = false;
+		boolean network_enabled = false;
+
+		try {
+			gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		} catch(Exception ex) {}
+
+		try {
+			network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		} catch(Exception ex) {}
+		if(gps_enabled){
+
+		}
+		if(network_enabled){
+
+		}
 
 		context.startService(intent);
 	}
@@ -262,7 +283,7 @@ public class LocationPollerService extends Service {
 		}
 
 		private void tryNextProvider() {
-			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout()+1000);
+			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
 			Log.i("giskook tryNextProvider", String.valueOf(android.os.Process.getThreadPriority(android.os.Process.myTid())));
 			requestLocationUdpate();
 		}
