@@ -54,7 +54,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
-        util.recordLog("locationRecevier.txt",loc.getProvider().toString() + " " + loc.getLatitude() + " " + loc.getLongitude());
+        util.recordLog("locationRecevier.txt",android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() );
 
         MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
         if(c != null ){
