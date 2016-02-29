@@ -1,5 +1,7 @@
 package com.example.zhangkai.gpstraker;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Environment;
 
 import java.io.BufferedWriter;
@@ -29,5 +31,27 @@ public class util {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isGpsEnabled(Context context){
+        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        return gps_enabled;
+    }
+
+    public static boolean isNetworkLocationEnabled(Context context){
+        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        boolean network_enable = false;
+
+        try {
+            network_enable = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        return network_enable ;
     }
 }

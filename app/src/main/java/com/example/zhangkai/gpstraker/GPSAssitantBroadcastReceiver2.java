@@ -12,14 +12,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
 /**
- * Created by zhangkai on 2016/2/27.
+ * Created by zhangkai on 2016/2/29.
  */
-public class GPSAssitantBroadcastReceiver extends BroadcastReceiver {
+public class GPSAssitantBroadcastReceiver2 extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!util.isGpsEnabled(context)){
-            return;
-        }
         LocationManager locationManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -52,7 +49,6 @@ public class GPSAssitantBroadcastReceiver extends BroadcastReceiver {
 
             }
         };
-
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         try {
             Thread.sleep(Constants.LOCATIONGPSASSITANT);

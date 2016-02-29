@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -81,24 +82,6 @@ public class LocationPollerService extends Service {
 		getLock(context.getApplicationContext()).acquire();
 
 		intent.setClass(context, LocationPollerService.class);
-
-		LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-		boolean gps_enabled = false;
-		boolean network_enabled = false;
-
-		try {
-			gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-		} catch(Exception ex) {}
-
-		try {
-			network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-		} catch(Exception ex) {}
-		if(gps_enabled){
-
-		}
-		if(network_enabled){
-
-		}
 
 		context.startService(intent);
 	}
@@ -181,12 +164,16 @@ public class LocationPollerService extends Service {
 		PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
 		pollerThread.start();
 
-		try {
-			pollerThread.join(parameters.getTimeout());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
+//		try {
+//			if(Constants.LOCATIONGPSTIMEOUT * 2 + 1000 > 9000){
+//				pollerThread.join(9000);
+//			}else{
+//				pollerThread.join(Constants.LOCATIONGPSTIMEOUT*2 + 1000);
+//			}
+//
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 
 		return (START_REDELIVER_INTENT);
 //		return START_STICKY;
@@ -284,14 +271,12 @@ public class LocationPollerService extends Service {
 
 		private void tryNextProvider() {
 			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
-			Log.i("giskook tryNextProvider", String.valueOf(android.os.Process.getThreadPriority(android.os.Process.myTid())));
 			requestLocationUdpate();
 		}
 
 		private void requestLocationUdpate() {
 			try {
-				locationManager.requestLocationUpdates(getCurrentProvider(), 0,
-						0, listener);
+				locationManager.requestLocationUpdates(getCurrentProvider(), 0,0, listener);
 			} catch (IllegalArgumentException e) {
 				// see http://code.google.com/p/android/issues/detail?id=21237
 				Log.w(getClass().getSimpleName(),

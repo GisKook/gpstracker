@@ -30,6 +30,7 @@
 
         <receiver android:name=".LocationPoller" />
         <receiver android:name=".GPSAssitantBroadcastReceiver" />
+        <receiver android:name=".GPSAssitantBroadcastReceiver2" />
         <receiver android:name=".AlarmReceiver"></receiver>
 
     </application>
