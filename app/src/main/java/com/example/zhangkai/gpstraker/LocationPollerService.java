@@ -270,6 +270,11 @@ public class LocationPollerService extends Service {
 		}
 
 		private void tryNextProvider() {
+//			if(getCurrentProvider().equals(LocationManager.GPS_PROVIDER)){
+//				handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
+//			}else{
+//				handler.postDelayed(onTimeout, 1000);
+//			}
 			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
 			requestLocationUdpate();
 		}

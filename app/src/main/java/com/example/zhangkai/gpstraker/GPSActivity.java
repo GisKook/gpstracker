@@ -21,8 +21,8 @@ public class GPSActivity extends AppCompatActivity {
         starttime += 1000;
 
         startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
-        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT-1000, GPSAssitantBroadcastReceiver2.class);
-        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT * 2 - 1000);
+        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
+        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT*2);
     }
 
     @Override
