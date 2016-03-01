@@ -163,13 +163,16 @@ public class LocationPollerService extends Service {
 
 		PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
 		pollerThread.start();
+		Log.i("giskook", android.os.Process.myTid()+" ");
 
 //		try {
+//			Log.i("giskook", "beforejoin");
 //			if(Constants.LOCATIONGPSTIMEOUT * 2 + 1000 > 9000){
 //				pollerThread.join(9000);
 //			}else{
 //				pollerThread.join(Constants.LOCATIONGPSTIMEOUT*2 + 1000);
 //			}
+//			Log.i("giskook", "afterjoin");
 //
 //		} catch (InterruptedException e) {
 //			e.printStackTrace();
@@ -266,6 +269,7 @@ public class LocationPollerService extends Service {
 		 */
 		@Override
 		protected void onPreExecute() {
+			Log.i("giskook", getThreadId()+" run");
 			tryNextProvider();
 		}
 
@@ -276,6 +280,7 @@ public class LocationPollerService extends Service {
 //				handler.postDelayed(onTimeout, 1000);
 //			}
 			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
+			Log.i("giskook", "tryNextProvider " + locationPollerParameter.getTimeout());
 			requestLocationUdpate();
 		}
 

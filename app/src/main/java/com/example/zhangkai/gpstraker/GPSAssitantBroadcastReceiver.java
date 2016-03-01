@@ -15,6 +15,9 @@ import android.support.v4.app.ActivityCompat;
  * Created by zhangkai on 2016/2/27.
  */
 public class GPSAssitantBroadcastReceiver extends BroadcastReceiver {
+    public GPSAssitantBroadcastReceiver(){
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!util.isGpsEnabled(context)){

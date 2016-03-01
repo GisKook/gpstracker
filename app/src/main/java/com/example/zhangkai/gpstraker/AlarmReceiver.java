@@ -28,6 +28,9 @@ import static com.example.zhangkai.gpstraker.DataBase.*;
  * Created by zhangkai on 2016/2/4.
  */
 public class AlarmReceiver extends BroadcastReceiver {
+    public AlarmReceiver(){
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
