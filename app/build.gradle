@@ -23,13 +23,22 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url "http://repo.commonsware.com"
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.+'
+
+    compile 'com.commonsware.cwac:wakeful:1.0.+'
 //    compile files('libs/CWAC-LocationPoller.jar')
     compile files("libs/org.eclipse.paho.client.mqttv3-1.0.2.jar")
     compile files("libs/org.eclipse.paho.android.service-1.0.2.jar")
+
 }
 
 

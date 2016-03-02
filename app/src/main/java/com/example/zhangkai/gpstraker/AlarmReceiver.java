@@ -59,20 +59,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         util.recordLog("locationRecevier.txt",android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() );
 
-        MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
-        if(c != null ){
-            if(c.isConnnected()){
-                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
-            }else{
-                DataBase dbHelper = new DataBase(context);
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                // Create a new map of values, where column names are the keys
-                ContentValues values = new ContentValues();
-                values.put(COLUMN_NAME_LOCATION, jsondata.toString());
-
-                // Insert the new row, returning the primary key value of the new row
-                db.insert(TABLE_NAME,null,values);
-            }
-        }
+//        MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
+//        if(c != null ){
+//            if(c.isConnnected()){
+//                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
+//            }else{
+//                DataBase dbHelper = new DataBase(context);
+//                SQLiteDatabase db = dbHelper.getWritableDatabase();
+//                // Create a new map of values, where column names are the keys
+//                ContentValues values = new ContentValues();
+//                values.put(COLUMN_NAME_LOCATION, jsondata.toString());
+//
+//                // Insert the new row, returning the primary key value of the new row
+//                db.insert(TABLE_NAME,null,values);
+//            }
+//        }
     }
 }

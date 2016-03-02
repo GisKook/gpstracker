@@ -225,6 +225,7 @@ public class LocationPollerService extends Service {
 
 			public void onProviderDisabled(String provider) {
 				// required for interface, not used
+				Log.i("giskook", "provider disabled");
 			}
 
 			public void onProviderEnabled(String provider) {
