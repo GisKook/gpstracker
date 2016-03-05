@@ -17,12 +17,14 @@ public class GPSActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
 
+
         long starttime = SystemClock.elapsedRealtime();
         starttime += 1000;
-
-        startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
-        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
-        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT*2);
+//
+//        startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
+//        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
+//        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT*2);
+        startLocationUpService(starttime);
     }
 
     @Override
@@ -46,9 +48,9 @@ public class GPSActivity extends AppCompatActivity {
     }
 
     private void startLocationUpService(long starttime){
-        MqttConnection connection = MqttConnection.createMqttConnection(Constants.MQTTTOPIC, Constants.MQTTBROKERHOST,Constants.MQTTBROKERPORT,this.getApplicationContext(),false);
-        connection.connect(0);
-        MqttConnections.getInstance().addConnection(connection);
+//        MqttConnection connection = MqttConnection.createMqttConnection(Constants.MQTTTOPIC, Constants.MQTTBROKERHOST,Constants.MQTTBROKERPORT,this.getApplicationContext(),false);
+//        connection.connect(0);
+//        MqttConnections.getInstance().addConnection(connection);
 
         Intent i=new Intent(this, LocationPoller.class);
 
@@ -57,13 +59,13 @@ public class GPSActivity extends AppCompatActivity {
         Intent extraIntent = new Intent(this, AlarmReceiver.class);
         parameter.setIntentToBroadcastOnCompletion(extraIntent);
         // try GPS and fall back to NETWORK_PROVIDER
-        parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER});
+        parameter.setProviders(new String[] {LocationManager.GPS_PROVIDER});
         parameter.setTimeout(Constants.LOCATIONGPSTIMEOUT);
         i.putExtras(bundle);
 
         pi= PendingIntent.getBroadcast(this, 0, i, 0);
         mgr=(AlarmManager)getSystemService(ALARM_SERVICE);
-         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+         mgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                  starttime,
                  Constants.LOCATIONPERIOD,
                  pi);

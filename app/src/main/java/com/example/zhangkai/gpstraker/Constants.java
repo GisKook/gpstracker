@@ -16,9 +16,10 @@ public class Constants {
     public static final int MQTTKEEPALIVEINTERVAL=30;
     public static final int MQTTCONNTIMEOUT=45;
     public static final int MQTTMAXCONNTIMEOUT=60;
+    public static final String LOGFILE="gpstrackerlog.txt";
 
-    public static final int LOCATIONPERIOD=60*1000;
-    public static final int LOCATIONGPSTIMEOUT=4*1000;
+    public static final int LOCATIONPERIOD=30*1000;
+    public static final int LOCATIONGPSTIMEOUT=8*1000;
     public static final int LOCATIONGPSASSITANT=8*1000;
 
 }

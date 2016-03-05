@@ -33,46 +33,57 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Location loc=(Location)intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
+        Location loc = (Location) intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
+        String timeout = (String) intent.getExtras().get(LocationPoller.EXTRA_ERROR);
 
+
+        if (timeout.equals("Timeout!")) {
+            util.recordLog(Constants.LOGFILE,  timeout);
+            try {
+                Thread.sleep(5000,0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss", Locale.CHINA);
         String strDate = (String) dateformat.format(loc.getTime());
         JSONObject jsondata = new JSONObject();
         try {
             jsondata.put("date", strDate);
             jsondata.put("card_no", "123456");
-            if(loc.getProvider().equals( "network")){
-                jsondata.put("type","LBS");
-            }else{
-                jsondata.put("type","gps");
+            if (loc.getProvider().equals("network")) {
+                jsondata.put("type", "LBS");
+            } else {
+                jsondata.put("type", "gps");
             }
             JSONObject jsoncontent = new JSONObject();
-            jsoncontent.put("type","Point");
+            jsoncontent.put("type", "Point");
             JSONArray coordinates = new JSONArray();
             coordinates.put(loc.getLongitude());
             coordinates.put(loc.getLatitude());
-            jsoncontent.put("coordinates",coordinates);
+            jsoncontent.put("coordinates", coordinates);
             jsondata.put("content", jsoncontent);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        util.recordLog("locationRecevier.txt",android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() );
+        util.recordLog(Constants.LOGFILE, android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() + timeout);
 
-//        MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
-//        if(c != null ){
-//            if(c.isConnnected()){
-//                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
-//            }else{
-//                DataBase dbHelper = new DataBase(context);
-//                SQLiteDatabase db = dbHelper.getWritableDatabase();
-//                // Create a new map of values, where column names are the keys
-//                ContentValues values = new ContentValues();
-//                values.put(COLUMN_NAME_LOCATION, jsondata.toString());
-//
-//                // Insert the new row, returning the primary key value of the new row
-//                db.insert(TABLE_NAME,null,values);
-//            }
-//        }
+        MqttConnection c = MqttConnections.getInstance().getConnection(Constants.MQTTTOPIC);
+        if(c != null ){
+            if(c.isConnnected()){
+                c.Publish(Constants.MQTTTOPIC, jsondata.toString());
+            }else{
+                DataBase dbHelper = new DataBase(context);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                // Create a new map of values, where column names are the keys
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_NAME_LOCATION, jsondata.toString());
+
+                // Insert the new row, returning the primary key value of the new row
+                db.insert(TABLE_NAME,null,values);
+            }
+        }
     }
 }

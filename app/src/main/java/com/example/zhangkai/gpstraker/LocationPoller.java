@@ -70,9 +70,9 @@ public class LocationPoller extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.i("giskook", "poller on receiver");
-		if(util.isGpsEnabled(context)) {
+//		if(util.isGpsEnabled(context)) {
 			LocationPollerService.requestLocation(context, intent);
-		}
+//		}
 		Log.i("giskook", "poller on receiver");
 	}
 	

@@ -154,29 +154,20 @@ public class LocationPollerService extends Service {
 						.setSmallIcon(R.drawable.loction)
 						.setContentTitle("My notification")
 						.setContentText(android.os.Process.myPid() + " " + android.os.Process.myTid());
-		;
 
 //		NotificationManager mNotifyMgr =
 //				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		//mNotifyMgr.notify(1,mBuilder.build());
 		startForeground(1234, mBuilder.build());
+		util.recordLog(Constants.LOGFILE,android.os.Process.myPid() + " " + android.os.Process.myTid());
 
 		PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
 		pollerThread.start();
-		Log.i("giskook", android.os.Process.myTid()+" ");
-
-//		try {
-//			Log.i("giskook", "beforejoin");
-//			if(Constants.LOCATIONGPSTIMEOUT * 2 + 1000 > 9000){
-//				pollerThread.join(9000);
-//			}else{
-//				pollerThread.join(Constants.LOCATIONGPSTIMEOUT*2 + 1000);
-//			}
-//			Log.i("giskook", "afterjoin");
-//
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
+		try {
+				pollerThread.join(parameters.getTimeout());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		return (START_REDELIVER_INTENT);
 //		return START_STICKY;
@@ -220,6 +211,7 @@ public class LocationPollerService extends Service {
 
 				toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
 				sendBroadcast(toBroadcast);
+				util.recordLog(Constants.LOGFILE, location.getAltitude() + " " + location.getLongitude());
 				quit();
 			}
 
@@ -235,6 +227,7 @@ public class LocationPollerService extends Service {
 			public void onStatusChanged(String provider, int status,
 										Bundle extras) {
 				// required for interface, not used
+				Log.i("giskook", "status changed");
 			}
 		};
 
@@ -281,18 +274,19 @@ public class LocationPollerService extends Service {
 //				handler.postDelayed(onTimeout, 1000);
 //			}
 			handler.postDelayed(onTimeout, locationPollerParameter.getTimeout());
-			Log.i("giskook", "tryNextProvider " + locationPollerParameter.getTimeout());
 			requestLocationUdpate();
 		}
 
 		private void requestLocationUdpate() {
 			try {
 				locationManager.requestLocationUpdates(getCurrentProvider(), 0,0, listener);
+				util.recordLog(Constants.LOGFILE,"request location" );
 			} catch (IllegalArgumentException e) {
 				// see http://code.google.com/p/android/issues/detail?id=21237
 				Log.w(getClass().getSimpleName(),
 						"Exception requesting updates -- may be emulator issue",
 						e);
+				util.recordLog(Constants.LOGFILE,"exception requestlocation");
 				quit();
 			}
 		}
