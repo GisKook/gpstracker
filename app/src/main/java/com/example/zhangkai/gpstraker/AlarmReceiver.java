@@ -7,7 +7,13 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Environment;
+import android.util.Log;
 
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.JSONArray;
@@ -36,14 +42,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         Location loc = (Location) intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
         String timeout = (String) intent.getExtras().get(LocationPoller.EXTRA_ERROR);
 
-
         if (timeout.equals("Timeout!")) {
             util.recordLog(Constants.LOGFILE,  timeout);
-            try {
-                Thread.sleep(5000,0);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            AMapLocClient.getInstance(context).start();
+
             return;
         }
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss", Locale.CHINA);
