@@ -1,17 +1,10 @@
 package com.example.zhangkai.gpstraker;
 
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.provider.SyncStateContract;
-import android.util.Log;
-
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -49,13 +42,11 @@ public class MqttConnection {
     /** True if this connection is secured using SSL **/
     private boolean sslConnection = false;
 
-    private int conntimeout = Constants.MQTTCONNTIMEOUT;
 
     /**
      * Connections status for  a connection
      */
     enum MqttConnectionStatus {
-
         /** Client is Connecting **/
         CONNECTING,
         /** Client is Connected **/
@@ -121,16 +112,11 @@ public class MqttConnection {
     public boolean isConnnected(){
         return this.client.isConnected();
     }
-    public void connect(int timeout){
+    public void connect(){
         String[] actionArgs = new String[0];
         ActionListener acListener = new ActionListener(this.context,ActionListener.Action.CONNECT,clientHandle,actionArgs);
         MqttConnectOptions connOpt = new MqttConnectOptions();
-        this.conntimeout += timeout;
-        if(this.conntimeout >= Constants.MQTTMAXCONNTIMEOUT){
-            connOpt.setConnectionTimeout(Constants.MQTTMAXCONNTIMEOUT);
-        }else{
-            connOpt.setConnectionTimeout(this.conntimeout);
-        }
+        connOpt.setConnectionTimeout(Constants.MQTTCONNIMEOUT);
         connOpt.setKeepAliveInterval(Constants.MQTTKEEPALIVEINTERVAL);
         connOpt.setCleanSession(false);
         this.client.setCallback(new MqttCallbackHandler(this.context,this.clientHandle));

@@ -169,7 +169,7 @@ public class LocationPollerService extends Service {
 			e.printStackTrace();
 		}
 
-		return (START_REDELIVER_INTENT);
+		return (START_NOT_STICKY);
 //		return START_STICKY;
 	}
 
