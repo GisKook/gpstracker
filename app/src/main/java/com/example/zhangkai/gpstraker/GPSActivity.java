@@ -25,6 +25,7 @@ public class GPSActivity extends AppCompatActivity {
 //        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
 //        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT*2);
         startLocationUpService(starttime);
+        MqttConn.getInstance(this, "zhangkai").connect();
     }
 
     @Override

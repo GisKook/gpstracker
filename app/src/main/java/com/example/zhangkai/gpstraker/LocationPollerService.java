@@ -211,7 +211,7 @@ public class LocationPollerService extends Service {
 
 				toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
 				sendBroadcast(toBroadcast);
-				util.recordLog(Constants.LOGFILE, location.getAltitude() + " " + location.getLongitude());
+				util.recordLog(Constants.LOGFILE, location.getLatitude() + " " + location.getLongitude());
 				quit();
 			}
 

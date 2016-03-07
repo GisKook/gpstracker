@@ -123,10 +123,6 @@ public class LocationUpService extends Service {
     }
 
     private void startLocationUpService(){
-        MqttConnection connection = MqttConnection.createMqttConnection(Constants.MQTTTOPIC, Constants.MQTTBROKERHOST,Constants.MQTTBROKERPORT,this.getApplicationContext(),false);
-        connection.connect(0);
-        MqttConnections.getInstance().addConnection(connection);
-
         //Intent i=new Intent(this, LocationPoller.class);
 //        i.setAction(Constants.LOCATIONACTION);
         Intent i=new Intent(Constants.STARTLOCATIONPOLLERACTION);

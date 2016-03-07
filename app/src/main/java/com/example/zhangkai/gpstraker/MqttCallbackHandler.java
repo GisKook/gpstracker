@@ -47,6 +47,8 @@ public class MqttCallbackHandler implements MqttCallback {
 //	  cause.printStackTrace();
     if (cause != null) {
       //MqttConnections.getInstance().getConnection(clientHandle).connect(10);
+      MqttConn.getInstance(context, "zhangkai").connect();
+
     }
   }
 

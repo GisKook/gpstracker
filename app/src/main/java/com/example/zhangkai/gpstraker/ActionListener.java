@@ -148,8 +148,9 @@ class ActionListener implements IMqttActionListener {
   public void onFailure(IMqttToken token, Throwable exception) {
     switch (action) {
       case CONNECT :
-        MqttConnections.getInstance().getConnection(token.getClient().getClientId()).setConnectionStatus(MqttConnection.MqttConnectionStatus.ERROR);
+ //       MqttConnections.getInstance().getConnection(token.getClient().getClientId()).setConnectionStatus(MqttConnection.MqttConnectionStatus.ERROR);
         //MqttConnections.getInstance().getConnection(token.getClient().getClientId()).connect(10);
+        MqttConn.getInstance(context, "zhangkai").connect();
         connect(exception);
         break;
       case DISCONNECT :

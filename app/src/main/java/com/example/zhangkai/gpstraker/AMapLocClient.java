@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class AMapLocClient {
     private  static AMapLocClient amap_instance = null;
     private AMapLocationClient locclient = null;
-    private AMapLocClient(Context context){
+    private AMapLocClient(final Context context){
         AMapLocationClient.setApiKey("00f3db3c0062e311e923627f1cc1d9d6");
         locclient = new AMapLocationClient(context);
         AMapLocationClientOption locationOpt = new AMapLocationClientOption();
@@ -27,8 +27,11 @@ public class AMapLocClient {
         locclient.setLocationListener(new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
-                util.recordLog(Constants.LOGFILE, "network" + aMapLocation.getAltitude() + " " + aMapLocation.getLongitude());
-
+                String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", aMapLocation);
+                if(MqttConn.getInstance(context, "zhangkai").isConnect()){
+                    MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTTOPIC, locationprotocol);
+                }
+                util.recordLog(Constants.LOGFILE, "network" + aMapLocation.getLatitude() + " " + aMapLocation.getLongitude());
             }
         });
         locclient.setLocationOption(locationOpt);
