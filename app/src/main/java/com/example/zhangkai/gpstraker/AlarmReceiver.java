@@ -51,18 +51,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", loc);
         util.recordLog(Constants.LOGFILE, android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() + timeout);
 
-        if(MqttConn.getInstance(context,"zhangkai").isConnect()){
-            MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTLOCATIOINTOPIC, locationprotocol);
-        }else{
-            MqttConn.getInstance(context, "zhangkai").connect();
-            DataBase dbHelper = new DataBase(context);
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            // Create a new map of values, where column names are the keys
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_NAME_LOCATION, locationprotocol);
-
-            // Insert the new row, returning the primary key value of the new row
-            db.insert(TABLE_NAME,null,values);
-        }
+//        if(MqttConn.getInstance(context,"zhangkai").isConnect()){
+//            MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTLOCATIOINTOPIC, locationprotocol);
+//        }else{
+// //           MqttConn.getInstance(context, "zhangkai").connect();
+//            DataBase dbHelper = new DataBase(context);
+//            SQLiteDatabase db = dbHelper.getWritableDatabase();
+//            // Create a new map of values, where column names are the keys
+//            ContentValues values = new ContentValues();
+//            values.put(COLUMN_NAME_LOCATION, locationprotocol);
+//
+//            // Insert the new row, returning the primary key value of the new row
+//            db.insert(TABLE_NAME,null,values);
+//        }
     }
 }

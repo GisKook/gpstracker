@@ -27,10 +27,10 @@ public class AMapLocClient {
         locclient.setLocationListener(new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
-                String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", aMapLocation);
-                if(MqttConn.getInstance(context, "zhangkai").isConnect()){
-                    MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTTOPIC, locationprotocol);
-                }
+              //  String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", aMapLocation);
+             //   if(MqttConn.getInstance(context, "zhangkai").isConnect()){
+             //       MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTTOPIC, locationprotocol);
+             //   }
                 util.recordLog(Constants.LOGFILE, "network" + aMapLocation.getLatitude() + " " + aMapLocation.getLongitude());
             }
         });
