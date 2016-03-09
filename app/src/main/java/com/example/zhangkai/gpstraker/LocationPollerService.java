@@ -212,6 +212,7 @@ public class LocationPollerService extends Service {
                 sendBroadcast(toBroadcast);
                 util.recordLog(Constants.LOGFILE, location.getLatitude() + " " + location.getLongitude());
                 quit();
+                onPostExecute();
             }
 
             public void onProviderDisabled(String provider) {

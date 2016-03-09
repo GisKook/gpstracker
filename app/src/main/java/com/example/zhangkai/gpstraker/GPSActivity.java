@@ -20,10 +20,10 @@ public class GPSActivity extends AppCompatActivity {
         long starttime = SystemClock.elapsedRealtime();
         starttime += 1000;
 //
-        startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
+ //       startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
 //        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
 //        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT*2);
-        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT - 1000);
+        startLocationUpService(starttime);
         //       MqttConn.getInstance(this, "zhangkai").connect();
     }
 

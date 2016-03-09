@@ -25,6 +25,7 @@ public class util {
             BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
             out.write(strDate);
             out.write(" : ");
+            out.write(android.os.Process.myPid() + " :");
             out.write(filecontent);
             out.write("\n");
             out.close();
