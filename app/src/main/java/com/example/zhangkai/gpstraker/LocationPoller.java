@@ -20,8 +20,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -63,19 +65,21 @@ public class LocationPoller extends BroadcastReceiver {
      */
     public static final String EXTRA_LASTKNOWN = LocationPollerResult.LASTKNOWN_LOCATION_KEY;
 
-    private static boolean inuse = false;
-
     /**
      * Standard entry point for a BroadcastReceiver. Delegates
      * the event to LocationPollerService for processing.
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(inuse == false) {
-            inuse = true;
+
+        long curtime = SystemClock.elapsedRealtime();
+        util.recordLog(Constants.LOGFILE, "receive alarm receiver " + curtime);
+        util.recordLog(Constants.LOGFILE, "receive alarm receiver " + Constants.locationpoller_last_exec_timedfg;''
+        if(curtime - Constants.locationpoller_last_exec_time > 10000){
             LocationPollerService.requestLocation(context, intent);
         }
-        inuse = false;
+        Constants.locationpoller_last_exec_time = curtime;
+        util.recordLog(Constants.LOGFILE, "leave alarm receiver " );
     }
 
 }

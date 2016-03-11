@@ -48,8 +48,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             return;
         }
-        String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", loc);
         util.recordLog(Constants.LOGFILE, android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() + timeout);
+        String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", loc);
 
 //        if(MqttConn.getInstance(context,"zhangkai").isConnect()){
 //            MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTLOCATIOINTOPIC, locationprotocol);

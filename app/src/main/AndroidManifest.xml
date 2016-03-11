@@ -36,9 +36,6 @@
         <service android:name="org.eclipse.paho.android.service.MqttService" />
         <service android:name=".LocationPollerService" />
         <service android:name="com.amap.api.location.APSService"></service>
-        <service
-            android:name=".LocationUpService"
-            android:exported="false"/>
 
         <receiver android:name=".LocationPoller" />
         <receiver android:name=".GPSAssitantBroadcastReceiver" />
