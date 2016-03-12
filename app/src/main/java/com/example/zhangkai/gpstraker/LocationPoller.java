@@ -72,8 +72,12 @@ public class LocationPoller extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         util.recordLog(Constants.LOGFILE, "receive alarm receiver ");
-        LocationPollerService.requestLocation(context, intent);
-        util.recordLog(Constants.LOGFILE, "leave alarm receiver " );
+        long curtime = SystemClock.elapsedRealtime();
+        if(curtime - Constants.locationpoller_lastexec > 10000) {
+            LocationPollerService.requestLocation(context, intent);
+        }
+        Constants.locationpoller_lastexec = curtime;
+        util.recordLog(Constants.LOGFILE, "leave alarm receiver ");
     }
 
 }

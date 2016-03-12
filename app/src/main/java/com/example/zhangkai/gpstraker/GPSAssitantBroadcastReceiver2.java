@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 
 /**
@@ -21,6 +22,15 @@ public class GPSAssitantBroadcastReceiver2 extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (!util.isGpsEnabled(context)) {
+            return;
+        }
+        long curtime = SystemClock.elapsedRealtime();
+        if(curtime - Constants.locationassist2_lastexec < 10000){
+            Constants.locationassist2_lastexec = curtime;
+            util.recordLog(Constants.LOGFILE, "assist2 leave");
+            return;
+        }
         LocationManager locationManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

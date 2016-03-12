@@ -209,6 +209,7 @@ public class LocationPollerService extends Service {
                 Intent toBroadcast = createIntentToBroadcastOnCompletion();
                 toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, Constants.LOCATIONPOLLER_SUCCESS);
                 toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
+                Constants.location_result_sender++;
                 sendBroadcast(toBroadcast);
                 quit();
             }
@@ -290,6 +291,7 @@ public class LocationPollerService extends Service {
             toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, Constants.LOCATIONPOLLER_TIMEOUT);
             Location location = locationManager.getLastKnownLocation(getCurrentProvider());
             toBroadcast.putExtra(LocationPollerResult.LASTKNOWN_LOCATION_KEY, location);
+            Constants.location_result_sender++;
             sendBroadcast(toBroadcast);
         }
 

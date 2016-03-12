@@ -24,6 +24,12 @@ public class GPSAssitantBroadcastReceiver extends BroadcastReceiver {
         if (!util.isGpsEnabled(context)) {
             return;
         }
+        long curtime = SystemClock.elapsedRealtime();
+        if(curtime - Constants.locationassist_lastexec < 10000){
+            Constants.locationassist_lastexec = curtime;
+            util.recordLog(Constants.LOGFILE, "assist leave");
+            return;
+        }
 
         LocationManager locationManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {

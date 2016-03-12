@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 public class GPSActivity extends AppCompatActivity {
     private PendingIntent pi = null;
@@ -19,8 +20,7 @@ public class GPSActivity extends AppCompatActivity {
 
         long starttime = SystemClock.elapsedRealtime();
         starttime += 1000;
-//
-        startLocationAssitant(starttime , GPSAssitantBroadcastReceiver.class);
+        startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
         startLocationAssitant(starttime + Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
         startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT * 2);
         //       MqttConn.getInstance(this, "zhangkai").connect();
@@ -79,7 +79,7 @@ public class GPSActivity extends AppCompatActivity {
     void startLocationAssitant(long starttime, Class<?> cls) {
         Intent i = new Intent(this, cls);
 
-        pi = PendingIntent.getBroadcast(this, (int)starttime, i, 0);
+        pi = PendingIntent.getBroadcast(this, (int) starttime, i, 0);
 
         mgr = (AlarmManager) getSystemService(ALARM_SERVICE);
         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,

@@ -36,6 +36,11 @@ import static com.example.zhangkai.gpstraker.DataBase.*;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        Constants.location_result_receiver++;
+        if(Constants.location_result_receiver != Constants.location_result_sender){
+            Constants.location_result_receiver++;
+        }
         String err = (String) intent.getExtras().get(LocationPoller.EXTRA_ERROR);
         if (err.equals(Constants.LOCATIONPOLLER_TIMEOUT)) {
             util.recordLog(Constants.LOGFILE, Constants.LOCATIONPOLLER_TIMEOUT);
