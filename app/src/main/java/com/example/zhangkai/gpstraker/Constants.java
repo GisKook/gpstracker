@@ -19,7 +19,7 @@ public class Constants {
     public static final String LOGFILE = "gpstrackerlog.txt";
 
     public static final int LOCATIONPERIOD = 30 * 1000;
-    public static final int LOCATIONGPSTIMEOUT = 8 * 1000;
+    public static final int LOCATIONGPSTIMEOUT =  8 * 1000;
     public static final int LOCATIONGPSASSITANT = 8 * 1000;
     public static final String LOCATIONPOLLER_TIMEOUT="timeout";
     public static final String LOCATIONPOLLER_SUCCESS="success";

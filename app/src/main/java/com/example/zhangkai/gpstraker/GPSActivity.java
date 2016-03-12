@@ -20,8 +20,9 @@ public class GPSActivity extends AppCompatActivity {
         long starttime = SystemClock.elapsedRealtime();
         starttime += 1000;
 //
- //       startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
-        startLocationUpService(starttime);
+        startLocationAssitant(starttime , GPSAssitantBroadcastReceiver.class);
+        startLocationAssitant(starttime + Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
+        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT * 2);
         //       MqttConn.getInstance(this, "zhangkai").connect();
     }
 
@@ -78,8 +79,7 @@ public class GPSActivity extends AppCompatActivity {
     void startLocationAssitant(long starttime, Class<?> cls) {
         Intent i = new Intent(this, cls);
 
-        int _id = (int) System.currentTimeMillis();
-        pi = PendingIntent.getBroadcast(this, _id, i, 0);
+        pi = PendingIntent.getBroadcast(this, (int)starttime, i, 0);
 
         mgr = (AlarmManager) getSystemService(ALARM_SERVICE);
         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
