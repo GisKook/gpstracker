@@ -9,20 +9,22 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 
 /**
  * Created by zhangkai on 2016/2/27.
  */
 public class GPSAssitantBroadcastReceiver extends BroadcastReceiver {
-    public GPSAssitantBroadcastReceiver(){
+    public GPSAssitantBroadcastReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!util.isGpsEnabled(context)){
+        if (!util.isGpsEnabled(context)) {
             return;
         }
+
         LocationManager locationManager = (LocationManager) context.getSystemService(context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -32,36 +34,35 @@ public class GPSAssitantBroadcastReceiver extends BroadcastReceiver {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            try {
+                Thread.sleep(Constants.LOCATIONGPSASSITANT);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            locationManager.removeUpdates(locationListener);
         }
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        try {
-            Thread.sleep(Constants.LOCATIONGPSASSITANT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        locationManager.removeUpdates(locationListener);
     }
 }

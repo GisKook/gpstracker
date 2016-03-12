@@ -34,22 +34,17 @@ import static com.example.zhangkai.gpstraker.DataBase.*;
  * Created by zhangkai on 2016/2/4.
  */
 public class AlarmReceiver extends BroadcastReceiver {
-    public AlarmReceiver(){
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        Location loc = (Location) intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
-        String timeout = (String) intent.getExtras().get(LocationPoller.EXTRA_ERROR);
-
-        if (timeout.equals("Timeout!")) {
-            util.recordLog(Constants.LOGFILE,  timeout);
+        String err = (String) intent.getExtras().get(LocationPoller.EXTRA_ERROR);
+        if (err.equals(Constants.LOCATIONPOLLER_TIMEOUT)) {
+            util.recordLog(Constants.LOGFILE, Constants.LOCATIONPOLLER_TIMEOUT);
             AMapLocClient.getInstance(context).start();
-
-            return;
+        } else if (err.equals(Constants.LOCATIONPOLLER_SUCCESS)) {
+            Location loc = (Location) intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
+            String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", loc);
+            util.recordLog(Constants.LOGFILE, "GPS " + loc.getLatitude() + " " + loc.getLongitude());
         }
-        util.recordLog(Constants.LOGFILE, android.os.Process.myPid() + " " + loc.getLatitude() + " " + loc.getLongitude() + " " + loc.getProvider().toString() + timeout);
-        String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", loc);
 
 //        if(MqttConn.getInstance(context,"zhangkai").isConnect()){
 //            MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTLOCATIOINTOPIC, locationprotocol);

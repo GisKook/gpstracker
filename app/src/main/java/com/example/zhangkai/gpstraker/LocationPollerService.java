@@ -102,7 +102,6 @@ public class LocationPollerService extends Service {
         LocationPollerParameter parameter = new LocationPollerParameter(intent.getExtras());
 
         return parameter;
-
     }
 
     /**
@@ -158,16 +157,16 @@ public class LocationPollerService extends Service {
 //				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         //mNotifyMgr.notify(1,mBuilder.build());
         startForeground(1234, mBuilder.build());
-        util.recordLog(Constants.LOGFILE, "before join");
+        util.recordLog(Constants.LOGFILE, "b join");
 
         PollerThread pollerThread = new PollerThread(lock, locationManager, parameters);
         pollerThread.start();
         try {
-            pollerThread.join(parameters.getTimeout() + 1000);
+            pollerThread.join(parameters.getTimeout() + 1000 );
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        util.recordLog(Constants.LOGFILE, "after join");
+        util.recordLog(Constants.LOGFILE, "a join");
         return (START_NOT_STICKY);
 //		return START_STICKY;
     }
@@ -208,10 +207,9 @@ public class LocationPollerService extends Service {
             public synchronized  void onLocationChanged(Location location) {
                 handler.removeCallbacks(onTimeout);
                 Intent toBroadcast = createIntentToBroadcastOnCompletion();
-
+                toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, Constants.LOCATIONPOLLER_SUCCESS);
                 toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
                 sendBroadcast(toBroadcast);
-                util.recordLog(Constants.LOGFILE, location.getLatitude() + " " + location.getLongitude());
                 quit();
             }
 
@@ -289,7 +287,7 @@ public class LocationPollerService extends Service {
         private void broadCastFailureMessage() {
             Intent toBroadcast = createIntentToBroadcastOnCompletion();
 
-            toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, "Timeout!");
+            toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, Constants.LOCATIONPOLLER_TIMEOUT);
             Location location = locationManager.getLastKnownLocation(getCurrentProvider());
             toBroadcast.putExtra(LocationPollerResult.LASTKNOWN_LOCATION_KEY, location);
             sendBroadcast(toBroadcast);
@@ -318,7 +316,6 @@ public class LocationPollerService extends Service {
         @Override
         protected void onPostExecute() {
             Log.i("giskook", "PollerThread onPostExecute");
-            util.recordLog(Constants.LOGFILE, "pollerthread postexecute");
             locationManager.removeUpdates(listener);
             super.onPostExecute();
         }
@@ -330,7 +327,6 @@ public class LocationPollerService extends Service {
         @Override
         protected void onUnlocked() {
             Log.i("giskook", "PollerThread onUnlocked");
-            util.recordLog(Constants.LOGFILE,"onUnlocked");
             stopSelf();
         }
     }

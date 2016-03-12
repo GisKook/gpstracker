@@ -21,8 +21,6 @@ public class GPSActivity extends AppCompatActivity {
         starttime += 1000;
 //
  //       startLocationAssitant(starttime, GPSAssitantBroadcastReceiver.class);
-//        startLocationAssitant(starttime+Constants.LOCATIONGPSASSITANT, GPSAssitantBroadcastReceiver2.class);
-//        startLocationUpService(starttime + Constants.LOCATIONGPSASSITANT*2);
         startLocationUpService(starttime);
         //       MqttConn.getInstance(this, "zhangkai").connect();
     }
@@ -60,6 +58,7 @@ public class GPSActivity extends AppCompatActivity {
         parameter.setIntentToBroadcastOnCompletion(extraIntent);
         // try GPS and fall back to NETWORK_PROVIDER
         parameter.setProviders(new String[]{LocationManager.GPS_PROVIDER});
+//        parameter.setProviders(new String[]{LocationManager.NETWORK_PROVIDER});
         parameter.setTimeout(Constants.LOCATIONGPSTIMEOUT);
         i.putExtras(bundle);
 
