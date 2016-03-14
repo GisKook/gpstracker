@@ -15,16 +15,9 @@
 
 package com.example.zhangkai.gpstraker;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,9 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.provider.ContactsContract;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -209,7 +199,7 @@ public class LocationPollerService extends Service {
                 Intent toBroadcast = createIntentToBroadcastOnCompletion();
                 toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, Constants.LOCATIONPOLLER_SUCCESS);
                 toBroadcast.putExtra(LocationPollerResult.LOCATION_KEY, location);
-                Constants.location_result_sender++;
+                util.recordLog(Constants.LOGFILE, "change location");
                 sendBroadcast(toBroadcast);
                 quit();
             }
@@ -291,7 +281,6 @@ public class LocationPollerService extends Service {
             toBroadcast.putExtra(LocationPollerResult.ERROR_KEY, Constants.LOCATIONPOLLER_TIMEOUT);
             Location location = locationManager.getLastKnownLocation(getCurrentProvider());
             toBroadcast.putExtra(LocationPollerResult.LASTKNOWN_LOCATION_KEY, location);
-            Constants.location_result_sender++;
             sendBroadcast(toBroadcast);
         }
 
