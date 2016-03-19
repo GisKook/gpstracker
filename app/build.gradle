@@ -30,7 +30,7 @@ dependencies {
 
 //    compile 'com.commonsware.cwac:wakeful:1.0.+'
 //    compile files('libs/CWAC-LocationPoller.jar')
-    compile files("libs/AMap_Location_v2.3.0_20160112.jar")
+    compile files("libs/AMap_Location_V2.4.0_20160308.jar")
     compile files("libs/org.eclipse.paho.client.mqttv3-1.0.2.jar")
     compile files("libs/org.eclipse.paho.android.service-1.0.2.jar")
 

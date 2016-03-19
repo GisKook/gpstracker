@@ -21,6 +21,7 @@ public class Constants {
     public static final int LOCATIONPERIOD = 30 * 1000;
     public static final int LOCATIONGPSTIMEOUT = 6 * 1000;
     public static final int LOCATIONGPSASSITANT = 8 * 1000;
+    public static final int NETWORKLOCATIONTIMEOUT=5*1000;
     public static final String LOCATIONPOLLER_TIMEOUT = "timeout";
     public static final String LOCATIONPOLLER_SUCCESS = "success";
     public static long locationpoller_lastexec = 0;

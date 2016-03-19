@@ -22,7 +22,7 @@ public class AMapLocClient {
         AMapLocationClientOption locationOpt = new AMapLocationClientOption();
         locationOpt.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
         locationOpt.setOnceLocation(true);
-        locationOpt.setHttpTimeOut(5000);
+        locationOpt.setHttpTimeOut(Constants.NETWORKLOCATIONTIMEOUT);
         locationOpt.setNeedAddress(false);
         locclient.setLocationListener(new AMapLocationListener() {
             @Override
@@ -45,6 +45,18 @@ public class AMapLocClient {
     }
 
     public void start(){
-        locclient.startLocation();
+        if(locclient != null){
+            locclient.startLocation();
+        }else{
+            util.recordLog(Constants.LOGFILE, "___________amaplocation null");
+        }
+    }
+
+    public void stop(){
+        if(locclient != null){
+            locclient.stopLocation();
+        }else{
+            util.recordLog(Constants.LOGFILE, "___________amaplocation null");
+        }
     }
 }

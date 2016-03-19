@@ -40,7 +40,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         String err = (String) intent.getExtras().get(LocationPoller.EXTRA_ERROR);
         if (err.equals(Constants.LOCATIONPOLLER_TIMEOUT)) {
             util.recordLog(Constants.LOGFILE, Constants.LOCATIONPOLLER_TIMEOUT);
+            Log.i("giskook", "zhangkai1");
             AMapLocClient.getInstance(context).start();
+            Log.i("giskook", "zhangkai2");
         } else if (err.equals(Constants.LOCATIONPOLLER_SUCCESS)) {
             Location loc = (Location) intent.getExtras().get(LocationPoller.EXTRA_LOCATION);
             String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", loc);

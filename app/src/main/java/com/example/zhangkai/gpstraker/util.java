@@ -17,12 +17,14 @@ import java.util.Locale;
  */
 public class util {
     public static void recordLog(String filename, String filecontent){
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss", Locale.CHINA);
-        String strDate = (String) dateformat.format(new Date());
-        File log = new File(Environment.getExternalStorageDirectory(),filename);
+//        return;
+        String filenamepid = android.os.Process.myPid() + ".txt";
+        File log = new File(Environment.getExternalStorageDirectory(),filenamepid);
 
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(log.getAbsolutePath(), log.exists()));
+            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd H:mm:ss", Locale.CHINA);
+            String strDate = (String) dateformat.format(new Date());
             out.write(strDate);
             out.write(" : ");
             out.write(android.os.Process.myPid() + " :");
