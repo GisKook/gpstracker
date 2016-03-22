@@ -1,4 +1,4 @@
-package com.example.zhangkai.gpstraker;
+package com.example.zhangkai.gpstraker.Protocol;
 
 import android.location.Location;
 

@@ -10,12 +10,10 @@
  * and the Eclipse Distribution License is available at 
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  */
-package com.example.zhangkai.gpstraker;
+package com.example.zhangkai.gpstraker.NetWork;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import android.content.Context;
 
@@ -124,7 +122,6 @@ class ActionListener implements IMqttActionListener {
    * then notify the user of success.
    */
   private void disconnect() {
-    MqttConnections.getInstance().getConnection(clientHandle).setConnectionStatus(MqttConnection.MqttConnectionStatus.DISCONNECTED);
   }
 
   /**
@@ -133,7 +130,6 @@ class ActionListener implements IMqttActionListener {
    * then notify the user of success.
    */
   private void connect() {
-    MqttConnections.getInstance().getConnection(clientHandle).setConnectionStatus(MqttConnection.MqttConnectionStatus.CONNECTED);
   }
 
   /**

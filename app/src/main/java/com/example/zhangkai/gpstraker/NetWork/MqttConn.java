@@ -1,8 +1,11 @@
-package com.example.zhangkai.gpstraker;
+package com.example.zhangkai.gpstraker.NetWork;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.zhangkai.gpstraker.Constants;
+import com.example.zhangkai.gpstraker.DataBase;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -26,7 +29,7 @@ public class MqttConn {
     public synchronized static MqttConn getInstance(Context context, String clientid){
         if(instance == null){
             instance = new MqttConn(clientid, context);
-            instance.mqttclient = new MqttAndroidClient(context, Constants.MQTTBROKERHOST, clientid);
+            instance.mqttclient = new MqttAndroidClient(context, Constants.MQTT_BROKER_HOST, clientid);
         }
 
         return instance;
@@ -40,8 +43,8 @@ public class MqttConn {
         String[] actionArgs = new String[0];
         ActionListener acListener = new ActionListener(this.context,ActionListener.Action.CONNECT,this.clientid,actionArgs);
         MqttConnectOptions connOpt = new MqttConnectOptions();
-        connOpt.setConnectionTimeout(Constants.MQTTCONNIMEOUT);
-        connOpt.setKeepAliveInterval(Constants.MQTTKEEPALIVEINTERVAL);
+        connOpt.setConnectionTimeout(Constants.MQTT_CONN_IMEOUT);
+        connOpt.setKeepAliveInterval(Constants.MQTT_KEEPALIVE_INTERVAL);
         connOpt.setCleanSession(false);
         this.mqttclient.setCallback(new MqttCallbackHandler(this.context,this.clientid));
         this.mqttclient.setTraceCallback(new MqttTraceCallback());

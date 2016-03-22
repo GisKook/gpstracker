@@ -26,7 +26,7 @@
         android:theme="@style/AppTheme">
         <meta-data android:name="com.amap.api.v2.apikey" android:value="00f3db3c0062e311e923627f1cc1d9d6" />
 
-        <activity android:name=".GPSActivity">
+        <activity android:name=".ui.GPSActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,13 +34,14 @@
         </activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
-        <service android:name=".LocationPollerService" />
         <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name=".Location.AmapLocationService"/>
 
-        <receiver android:name=".LocationPoller" />
-        <receiver android:name=".GPSAssitantBroadcastReceiver" />
-        <receiver android:name=".GPSAssitantBroadcastReceiver2" />
-        <receiver android:name=".AlarmReceiver"></receiver>
+        <receiver android:name="com.commonsware.cwac.locpoll.LocationPoller" />
+        <service android:name="com.commonsware.cwac.locpoll.LocationPollerService" />
+
+        <receiver android:name=".Location.LocationReceiver">
+        </receiver>
 
     </application>
 

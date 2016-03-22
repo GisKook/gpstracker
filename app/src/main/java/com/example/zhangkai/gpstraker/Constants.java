@@ -10,23 +10,20 @@ public class Constants {
 //    public static final String MQTTBROKERHOST="222.222.218.50";
 //    public static final int MQTTBROKERPORT=31883;
 
-    public static final String MQTTTOPIC = "zhangkai";
-    public static final String MQTTLOCATIOINTOPIC = "zhangkai";
-    public static final String MQTTBROKERHOST = "tcp://test.mosquitto.org:1883";
-    public static final int MQTTBROKERPORT = 1883;
-    public static final int MQTTKEEPALIVEINTERVAL = 60;
-    public static final int MQTTCONNIMEOUT = 45;
+    public static final String MQTT_TOPIC = "zhangkai";
+    public static final String MQTT_LOCATIOIN_TOPIC = "zhangkai";
+    public static final String MQTT_BROKER_HOST = "tcp://test.mosquitto.org:1883";
+    public static final int MQTT_BROKER_PORT = 1883;
+    public static final int MQTT_KEEPALIVE_INTERVAL = 60;
+    public static final int MQTT_CONN_IMEOUT = 45;
     public static final String LOGFILE = "gpstrackerlog.txt";
 
-    public static final int LOCATIONPERIOD = 30 * 1000;
-    public static final int LOCATIONGPSTIMEOUT = 6 * 1000;
-    public static final int LOCATIONGPSASSITANT = 8 * 1000;
-    public static final int NETWORKLOCATIONTIMEOUT=5*1000;
-    public static final String LOCATIONPOLLER_TIMEOUT = "timeout";
-    public static final String LOCATIONPOLLER_SUCCESS = "success";
-    public static long locationpoller_lastexec = 0;
-    public static long locationassist_lastexec = 0;
-    public static long locationassist2_lastexec = 0;
-    public static byte location_result_receiver = 0;
-    public static byte location_result_sender = 0;
+    public static final int LOCATION_PERIOD = 300 * 1000;
+    public static final int LOCATION_GPS_TIMEOUT = 20 * 1000;
+    public static final int NETWORK_LOCATION_TIMEOUT=10*1000;
+
+    public static final String INTENT_FILTER_GPS_LOCATION="com.zhangkai.gps.location";
+    public static final String INTENT_FILTER_NETWORK_LOCATION = "com.zhangkai.network.location";
+
+    public static String MQTT_CLIENT_ID = "zhangkai";
 }

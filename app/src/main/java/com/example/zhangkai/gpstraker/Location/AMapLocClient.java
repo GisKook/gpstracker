@@ -1,4 +1,4 @@
-package com.example.zhangkai.gpstraker;
+package com.example.zhangkai.gpstraker.Location;
 
 import android.content.Context;
 import android.util.Log;
@@ -7,8 +7,10 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-
-import java.util.HashMap;
+import com.example.zhangkai.gpstraker.Constants;
+import com.example.zhangkai.gpstraker.NetWork.MqttConn;
+import com.example.zhangkai.gpstraker.Protocol.EncodeProtocol;
+import com.example.zhangkai.gpstraker.util;
 
 /**
  * Created by zhangkai on 2016/3/5.
@@ -22,16 +24,15 @@ public class AMapLocClient {
         AMapLocationClientOption locationOpt = new AMapLocationClientOption();
         locationOpt.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
         locationOpt.setOnceLocation(true);
-        locationOpt.setHttpTimeOut(Constants.NETWORKLOCATIONTIMEOUT);
+        locationOpt.setHttpTimeOut(Constants.NETWORK_LOCATION_TIMEOUT);
         locationOpt.setNeedAddress(false);
         locclient.setLocationListener(new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
-              //  String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", aMapLocation);
-             //   if(MqttConn.getInstance(context, "zhangkai").isConnect()){
-             //       MqttConn.getInstance(context, "zhangkai").publish(Constants.MQTTTOPIC, locationprotocol);
-             //   }
-                util.recordLog(Constants.LOGFILE, "network" + aMapLocation.getLatitude() + " " + aMapLocation.getLongitude());
+                String locationprotocol = EncodeProtocol.encodeLocationProtocol("123456", aMapLocation);
+                if(MqttConn.getInstance(context, Constants.MQTT_CLIENT_ID).isConnect()){
+                    MqttConn.getInstance(context, Constants.MQTT_CLIENT_ID).publish(Constants.MQTT_TOPIC, locationprotocol);
+                }
             }
         });
         locclient.setLocationOption(locationOpt);
@@ -46,6 +47,7 @@ public class AMapLocClient {
 
     public void start(){
         if(locclient != null){
+            util.recordLog(Constants.LOGFILE, "amap start");
             locclient.startLocation();
         }else{
             util.recordLog(Constants.LOGFILE, "___________amaplocation null");
