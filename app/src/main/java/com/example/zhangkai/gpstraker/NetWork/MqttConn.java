@@ -3,11 +3,14 @@ package com.example.zhangkai.gpstraker.NetWork;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.zhangkai.gpstraker.Constants;
 import com.example.zhangkai.gpstraker.DataBase;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -53,6 +56,10 @@ public class MqttConn {
         }catch (MqttException e){
             e.printStackTrace();
         }
+    }
+
+    public void subscribe(String topic, int qos) throws MqttException {
+        this.mqttclient.subscribe(topic, qos);
     }
 
     public void publish(String topic, String value){
