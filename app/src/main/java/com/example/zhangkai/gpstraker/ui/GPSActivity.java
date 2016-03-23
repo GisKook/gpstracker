@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.commonsware.cwac.locpoll.LocationPoller;
 import com.example.zhangkai.gpstraker.BuildConfig;
@@ -19,6 +22,7 @@ import com.example.zhangkai.gpstraker.R;
 public class GPSActivity extends AppCompatActivity {
     private PendingIntent pi = null;
     private AlarmManager mgr = null;
+    private Button btnTestANR = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,15 @@ public class GPSActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
+
+        this.btnTestANR = (Button)this.findViewById(R.id.button);
+        this.btnTestANR.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "hello world", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         startLocationUpService();
         MqttConn.getInstance(this, "zhangkai").connect();
@@ -67,8 +80,9 @@ public class GPSActivity extends AppCompatActivity {
         Intent extraIntent = new Intent(this, LocationReceiver.class);
         i.putExtra(LocationPoller.EXTRA_INTENT,extraIntent);
         i.putExtra(LocationPoller.EXTRA_PROVIDER,LocationManager.GPS_PROVIDER);
-        i.putExtra(LocationPoller.EXTRA_TIMEOUT, Constants.LOCATION_GPS_TIMEOUT);
-
+        Bundle bundle = new Bundle();
+        bundle.putLong(LocationPoller.EXTRA_TIMEOUT, Constants.LOCATION_GPS_TIMEOUT);
+        i.putExtras(bundle);
 
         PendingIntent pi=PendingIntent.getBroadcast(this, 0, i, 0);
         mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,

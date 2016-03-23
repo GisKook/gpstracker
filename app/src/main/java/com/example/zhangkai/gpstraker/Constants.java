@@ -18,12 +18,9 @@ public class Constants {
     public static final int MQTT_CONN_IMEOUT = 45;
     public static final String LOGFILE = "gpstrackerlog.txt";
 
-    public static final int LOCATION_PERIOD = 300 * 1000;
+    public static final int LOCATION_PERIOD = 60 * 1000;
     public static final int LOCATION_GPS_TIMEOUT = 20 * 1000;
     public static final int NETWORK_LOCATION_TIMEOUT=10*1000;
-
-    public static final String INTENT_FILTER_GPS_LOCATION="com.zhangkai.gps.location";
-    public static final String INTENT_FILTER_NETWORK_LOCATION = "com.zhangkai.network.location";
 
     public static String MQTT_CLIENT_ID = "zhangkai";
 }

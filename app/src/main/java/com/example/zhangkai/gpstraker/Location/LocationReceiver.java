@@ -1,5 +1,6 @@
 package com.example.zhangkai.gpstraker.Location;
 
+import android.accounts.AbstractAccountAuthenticator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +20,8 @@ public class LocationReceiver extends BroadcastReceiver {
 
         if (loc == null) {
             msg = intent.getStringExtra(LocationPoller.EXTRA_ERROR);
-            AMapLocClient.getInstance(context).start();
+            Intent i = new Intent(context, AmapLocationService.class);
+            context.startService(i);
         } else {
             msg = loc.toString();
         }
