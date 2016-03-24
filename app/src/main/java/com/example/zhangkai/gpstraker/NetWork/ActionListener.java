@@ -196,7 +196,6 @@ class ActionListener implements IMqttActionListener {
      * @param exception This argument is not used
      */
     private void connect(Throwable exception) {
-
     }
 
 }

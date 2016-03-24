@@ -29,8 +29,7 @@
             android:value="00f3db3c0062e311e923627f1cc1d9d6" />
 
         <activity
-            android:name=".ui.GPSActivity"
-            android:theme="@style/Theme.Transparent">
+            android:name=".ui.GPSActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

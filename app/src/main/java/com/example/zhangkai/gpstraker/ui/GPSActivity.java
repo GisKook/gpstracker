@@ -2,12 +2,15 @@ package com.example.zhangkai.gpstraker.ui;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +27,8 @@ import com.example.zhangkai.gpstraker.R;
 public class GPSActivity extends Activity {
     private PendingIntent pi = null;
     private AlarmManager mgr = null;
-//    private Button btnTestANR = null;
+    private Button btnTestANR = null;
+    Context cxt = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +40,24 @@ public class GPSActivity extends Activity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
+        cxt = this;
 
-//        this.btnTestANR = (Button)this.findViewById(R.id.button);
-//        this.btnTestANR.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
+        this.btnTestANR = (Button)this.findViewById(R.id.button);
+        this.btnTestANR.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
 //                Toast.makeText(getApplicationContext(), "hello world", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+                NotificationDialogFragment dialog = new NotificationDialogFragment();
+//                dialog.getDialog().show();
+
+                NotificationManager mNotifyManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(cxt);
+                mBuilder.setContentTitle("Picture Download")
+                        .setContentText("Download in progress")
+                        .setSmallIcon(R.drawable.loction);
+                mNotifyManager.notify(1222,mBuilder.build());
+            }
+        });
 
         startLocationUpService();
         MqttConn.getInstance(this, "zhangkai").connect();
