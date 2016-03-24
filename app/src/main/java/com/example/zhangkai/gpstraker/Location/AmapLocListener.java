@@ -15,5 +15,6 @@ import com.example.zhangkai.gpstraker.NetWork.MqttConn;
 public class AmapLocListener implements AMapLocationListener{
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+
     }
 }

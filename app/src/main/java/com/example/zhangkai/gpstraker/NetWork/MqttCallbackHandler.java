@@ -69,7 +69,7 @@ public class MqttCallbackHandler implements MqttCallback {
             mNotifyManager.notify(1222,mBuilder.build());
 
             NotificationDialogFragment dialog = new NotificationDialogFragment();
-            dialog.getDialog().show();
+//            dialog.getDialog().show();
         }
     }
 

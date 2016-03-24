@@ -23,8 +23,8 @@ import com.example.zhangkai.gpstraker.Location.LocationReceiver;
 import com.example.zhangkai.gpstraker.NetWork.MqttConn;
 import com.example.zhangkai.gpstraker.R;
 
-//public class GPSActivity extends AppCompatActivity {
-public class GPSActivity extends Activity {
+public class GPSActivity extends AppCompatActivity {
+//public class GPSActivity extends Activity {
     private PendingIntent pi = null;
     private AlarmManager mgr = null;
     private Button btnTestANR = null;

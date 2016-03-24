@@ -21,7 +21,8 @@ public class LocationReceiver extends BroadcastReceiver {
         if (loc == null) {
             msg = intent.getStringExtra(LocationPoller.EXTRA_ERROR);
             Intent i = new Intent(context, AmapLocationService.class);
-            context.startService(i);
+//            context.startService(i);
+
         } else {
             msg = loc.toString();
         }

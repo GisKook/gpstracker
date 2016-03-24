@@ -18,7 +18,7 @@ import com.example.zhangkai.gpstraker.util;
 public class AMapLocClient {
     private  static AMapLocClient amap_instance = null;
     private AMapLocationClient locclient = null;
-    private AMapLocClient(final Context context){
+    public AMapLocClient(final Context context){
         AMapLocationClient.setApiKey("00f3db3c0062e311e923627f1cc1d9d6");
         locclient = new AMapLocationClient(context);
         AMapLocationClientOption locationOpt = new AMapLocationClientOption();
